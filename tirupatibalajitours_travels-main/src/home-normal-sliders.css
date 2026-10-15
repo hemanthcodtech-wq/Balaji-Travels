@@ -1,0 +1,121 @@
+/* Normal Swiper styling for Popular Routes and Vehicle Fleet only. */
+.home-showcase:has(.route-card) .home-slider,
+.home-showcase:has(.vehicle-card) .home-slider {
+  width: 100%;
+  margin-top: 30px;
+  padding: 6px 4px 44px !important;
+  overflow: hidden;
+}
+
+.home-showcase:has(.route-card) .home-slider .swiper-wrapper,
+.home-showcase:has(.vehicle-card) .home-slider .swiper-wrapper {
+  align-items: stretch;
+}
+
+.home-showcase:has(.route-card) .home-slider .swiper-slide,
+.home-showcase:has(.vehicle-card) .home-slider .swiper-slide {
+  height: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.home-showcase:has(.route-card) .home-slider .home-slide-card,
+.home-showcase:has(.vehicle-card) .home-slider .home-slide-card {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-showcase:has(.route-card) .home-slider .slide-image,
+.home-showcase:has(.vehicle-card) .home-slider .slide-image { flex: 0 0 auto; }
+
+.home-showcase:has(.route-card) .home-slider .card-body,
+.home-showcase:has(.vehicle-card) .home-slider .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-showcase:has(.route-card) .home-slider .card-action-btn,
+.home-showcase:has(.vehicle-card) .home-slider .card-action-btn { margin-top: auto; }
+
+.home-showcase:has(.route-card) .home-slider .slide-image { height: 225px; }
+.home-showcase:has(.route-card) .home-slider .card-body { min-height: 205px; }
+.home-showcase:has(.vehicle-card) .home-slider .vehicle-image-bg { height: 225px; }
+.home-showcase:has(.vehicle-card) .home-slider .vehicle-image-bg img { height: 100%; width: 100%; object-fit: cover !important; object-position: center !important; padding: 0 !important; }
+.home-showcase:has(.vehicle-card) .home-slider .card-body { min-height: 245px; }
+
+@media (max-width: 1023px) {
+  .home-showcase:has(.route-card) .home-slider,
+  .home-showcase:has(.vehicle-card) .home-slider { margin-top: 24px; padding-bottom: 42px !important; }
+  .home-showcase:has(.route-card) .home-slider .slide-image,
+  .home-showcase:has(.vehicle-card) .home-slider .vehicle-image-bg { height: 210px; }
+}
+
+/* MOBILE ONLY: exactly one full-width card. No next-card preview. */
+@media (max-width: 639px) {
+  .home-showcase:has(.route-card),
+  .home-showcase:has(.vehicle-card) { padding: 52px 20px 72px; }
+
+  .home-showcase:has(.route-card) .section-heading.compact,
+  .home-showcase:has(.vehicle-card) .section-heading.compact { display: block; margin-bottom: 18px; }
+
+  .home-showcase:has(.route-card) .section-heading.compact > div,
+  .home-showcase:has(.vehicle-card) .section-heading.compact > div { width: 100%; min-width: 0; }
+
+  .home-showcase:has(.route-card) .section-heading.compact .eyebrow,
+  .home-showcase:has(.vehicle-card) .section-heading.compact .eyebrow {
+    display: block; max-width: 100%; line-height: 1.25; margin-bottom: 8px;
+  }
+
+  .home-showcase:has(.route-card) .section-heading.compact h2,
+  .home-showcase:has(.vehicle-card) .section-heading.compact h2 {
+    width: 100%; max-width: none; margin: 0 0 12px;
+    font-size: clamp(2rem, 9vw, 2.7rem); line-height: 1.08;
+    overflow-wrap: normal; word-break: normal;
+  }
+
+  .home-showcase:has(.route-card) .section-heading.compact .all-link,
+  .home-showcase:has(.vehicle-card) .section-heading.compact .all-link { display: inline-flex; width: auto; margin: 0; }
+
+  /* Override Swiper's 1.08 slidesPerView sizing. The active slide owns the viewport. */
+  .home-showcase:has(.route-card) .home-slider,
+  .home-showcase:has(.vehicle-card) .home-slider {
+    width: 100%;
+    margin: 0;
+    padding: 4px 0 40px !important;
+    overflow: hidden;
+  }
+
+  .home-showcase:has(.route-card) .home-slider .swiper-wrapper,
+  .home-showcase:has(.vehicle-card) .home-slider .swiper-wrapper { align-items: stretch; }
+
+  .home-showcase:has(.route-card) .home-slider .swiper-slide,
+  .home-showcase:has(.vehicle-card) .home-slider .swiper-slide {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .home-showcase:has(.route-card) .home-slider .home-slide-card,
+  .home-showcase:has(.vehicle-card) .home-slider .home-slide-card {
+    width: 100%; max-width: 100%; border-radius: 20px;
+  }
+
+  .home-showcase:has(.route-card) .home-slider .slide-image,
+  .home-showcase:has(.vehicle-card) .home-slider .vehicle-image-bg { height: 190px; }
+
+  .home-showcase:has(.route-card) .home-slider .card-body { min-height: 190px; padding: 15px; }
+  .home-showcase:has(.vehicle-card) .home-slider .card-body { min-height: 215px; padding: 15px; }
+
+  .home-showcase:has(.route-card) .home-slider .card-body h3,
+  .home-showcase:has(.vehicle-card) .home-slider .card-body h3 { font-size: 17px; line-height: 1.25; }
+
+  .home-showcase:has(.route-card) .home-slider .card-body p,
+  .home-showcase:has(.vehicle-card) .home-slider .card-body p { font-size: 11px; line-height: 1.5; }
+
+  .home-showcase:has(.route-card) .home-slider .card-action-btn,
+  .home-showcase:has(.vehicle-card) .home-slider .card-action-btn { font-size: 10px; }
+}

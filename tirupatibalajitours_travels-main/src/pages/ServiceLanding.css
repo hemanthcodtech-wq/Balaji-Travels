@@ -1,0 +1,1523 @@
+/* Modern Premium Design System for Service Landing Pages */
+
+.service-page {
+  background: var(--bg);
+  color: var(--ink);
+  padding-bottom: 70px;
+  position: relative;
+}
+
+.not-found-page {
+  text-align: center;
+  padding: 120px 20px;
+}
+
+/* Service Hero Styling */
+.service-hero {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 130px 28px 65px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 50px;
+  align-items: center;
+}
+.hero-backdrop-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 90%;
+  background: radial-gradient(circle at 85% 15%, rgba(17, 27, 94, 0.08) 0%, transparent 45%),
+              radial-gradient(circle at 15% 85%, rgba(244, 196, 0, 0.07) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 0;
+}
+.service-hero-copy {
+  position: relative;
+  z-index: 1;
+}
+.hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold-soft);
+  border: 1px solid rgba(244, 196, 0, 0.4);
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: #795d00;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  margin-bottom: 14px;
+}
+.hero-kicker-tag {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.service-hero-copy h1 {
+  font-size: clamp(2.3rem, 4.2vw, 3.8rem);
+  color: var(--blue-950);
+  line-height: 1.1;
+  margin: 0 0 18px;
+  font-family: 'Playfair Display', serif;
+}
+.hero-description {
+  color: #475569;
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 620px;
+  margin-bottom: 24px;
+}
+.hero-trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 30px;
+  font-size: 13px;
+  color: var(--blue);
+  font-weight: 600;
+}
+.hero-trust-badges span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.hero-trust-badges svg {
+  color: var(--success);
+}
+
+.service-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.hero-call-btn {
+  background: var(--gold);
+  color: var(--blue-950);
+  padding: 14px 24px;
+  font-size: 13px;
+  border-radius: 10px;
+}
+.hero-wa-btn {
+  background: #25d366;
+  color: #ffffff;
+  border-color: #25d366;
+  padding: 14px 24px;
+  font-size: 13px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
+}
+.hero-wa-btn:hover {
+  background: #20bd5a;
+  color: #ffffff;
+}
+
+/* Service Hero Image Frame */
+.service-hero-image-card {
+  position: relative;
+  height: 440px;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 4px solid #ffffff;
+  z-index: 1;
+}
+.service-hero-image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease);
+}
+.service-hero-image-card:hover img {
+  transform: scale(1.03);
+}
+.hero-image-glass-tag {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(7, 13, 50, 0.88);
+  backdrop-filter: blur(14px);
+  padding: 14px 20px;
+  border-radius: 18px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+.hero-image-glass-tag svg {
+  color: var(--gold);
+}
+.hero-image-glass-tag strong {
+  display: block;
+  font-size: 14px;
+}
+.hero-image-glass-tag small {
+  display: block;
+  font-size: 11px;
+  color: #cbd5e1;
+}
+
+/* Quick Specs Container */
+.service-quick-container {
+  padding-top: 0;
+  padding-bottom: 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.service-quick-grid {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) auto;
+  gap: 20px;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+.quick-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 15px;
+  border-right: 1px solid var(--line);
+}
+.quick-item:nth-child(3) {
+  border-right: none;
+}
+.quick-item svg {
+  color: var(--blue);
+  flex-shrink: 0;
+}
+.quick-item b {
+  display: block;
+  font-size: 14px;
+  color: var(--blue-950);
+}
+.quick-item small {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.quick-book-btn {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+}
+
+/* Longform & Pale Section Spacing */
+.longform-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.longform-section.pale {
+  padding-top: 65px;
+  padding-bottom: 65px;
+}
+
+/* Service About Section */
+.service-about-section {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.service-about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+.lead-about-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #475569;
+  margin-top: 14px;
+}
+.service-about-points {
+  display: grid;
+  gap: 16px;
+}
+.point-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  padding: 20px 22px;
+  border-radius: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  box-shadow: var(--shadow-sm);
+}
+.point-card svg {
+  color: var(--success);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.point-card strong {
+  display: block;
+  font-size: 15px;
+  color: var(--blue-950);
+  margin-bottom: 4px;
+}
+.point-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* 3-Step Booking Grid */
+.booking-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.step-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+.step-number {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.step-card h3 {
+  font-size: 18px;
+  color: var(--blue-950);
+  margin: 0 0 10px;
+}
+.step-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* Vehicle Cards Grid */
+.service-vehicles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.vehicle-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.vehicle-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+.vehicle-photo-wrap {
+  position: relative;
+  height: 200px;
+  background: var(--surface-soft);
+}
+.vehicle-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.vehicle-driver-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: var(--blue-950);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+.vehicle-card-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.vehicle-top-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.vehicle-top-badge svg {
+  color: var(--gold);
+}
+.vehicle-card-content h3 {
+  font-size: 20px;
+  color: var(--blue-950);
+  margin: 0 0 6px;
+}
+.vehicle-capacity {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+.vehicle-specs-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.vehicle-specs-pills span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface-soft);
+  color: #475569;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.vehicle-price-box {
+  background: var(--surface-soft);
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  margin-top: auto;
+}
+.vehicle-price-box small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.vehicle-price-box strong {
+  display: block;
+  font-size: 15px;
+  color: var(--blue);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.vehicle-book-btn {
+  background: #25d366;
+  color: #ffffff;
+  border-color: #25d366;
+  width: 100%;
+  justify-content: center;
+}
+.vehicle-book-btn:hover {
+  background: #1eb956;
+}
+
+/* Fare Note Box */
+.fare-note-box {
+  margin-top: 28px;
+  background: var(--gold-soft);
+  border: 1px solid rgba(244, 196, 0, 0.4);
+  padding: 18px 22px;
+  border-radius: 16px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.fare-note-box svg {
+  color: #9a7b00;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.fare-note-box p {
+  margin: 0;
+  font-size: 13px;
+  color: #796105;
+  line-height: 1.6;
+}
+
+/* Route Distance Table */
+.route-table-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.route-table-grid {
+  display: grid;
+}
+.route-row-item {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr 0.7fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.route-row-item:last-child {
+  border-bottom: none;
+}
+.route-row-item:nth-child(even) {
+  background: #f8fafc;
+}
+.route-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--blue-950);
+}
+.route-name svg {
+  color: var(--gold);
+}
+.route-dist {
+  color: var(--blue);
+  font-weight: 800;
+}
+.route-time {
+  color: var(--muted);
+  font-size: 13px;
+}
+.route-plan-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* Features Grid */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.feature-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 26px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease);
+}
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+.feature-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--gold-soft);
+  color: #9a7b00;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+}
+.feature-card h3 {
+  font-size: 17px;
+  color: var(--blue-950);
+  margin: 0 0 8px;
+}
+.feature-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* Trip Cards Grid */
+.service-trip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.trip-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 20px;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.trip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+.trip-image-wrap {
+  height: 140px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.trip-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.trip-meta-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--blue);
+  background: var(--surface-soft);
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+.trip-card-content h3 {
+  font-size: 18px;
+  color: var(--blue-950);
+  margin: 0 0 6px;
+}
+.trip-route-desc {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+.trip-plan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* Inclusions Grid */
+.inclusions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+.inclusion-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+}
+.inclusion-card h3 {
+  font-size: 18px;
+  color: var(--blue-950);
+  margin: 0 0 12px;
+}
+.inclusion-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* Service FAQ Accordion */
+.service-faq-list {
+  display: grid;
+  gap: 14px;
+}
+.service-faq-item {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.service-faq-summary {
+  padding: 20px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--blue-950);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.service-faq-summary::-webkit-details-marker {
+  display: none;
+}
+.service-faq-answer {
+  padding: 0 24px 22px;
+}
+.service-faq-answer p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+/* Final Banner CTA */
+.service-final-cta {
+  max-width: 1280px;
+  margin: 60px auto 0;
+  background: linear-gradient(135deg, var(--blue-950), var(--blue));
+  border-radius: 28px;
+  padding: 55px 40px;
+  color: #ffffff;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+.final-cta-copy h2 {
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  margin: 12px 0 14px;
+  color: #ffffff;
+}
+.final-cta-copy p {
+  color: #d1dcf9;
+  font-size: 15px;
+  max-width: 650px;
+  margin: 0 auto 30px;
+  line-height: 1.7;
+}
+.cta-actions {
+  justify-content: center;
+}
+
+/* Responsive Styles */
+@media (max-width: 1100px) {
+  .service-quick-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .quick-item {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+  }
+  .quick-action-box {
+    grid-column: 1 / -1;
+  }
+  .service-vehicles-grid, .features-grid, .inclusions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .service-hero {
+    grid-template-columns: 1fr;
+    padding-top: 110px;
+    gap: 30px;
+  }
+  .service-hero-image-card {
+    height: 280px;
+  }
+  .service-about-grid {
+    grid-template-columns: 1fr;
+  }
+  .booking-steps-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .service-trip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .route-row-item {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .route-name {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .service-vehicles-grid, .features-grid, .inclusions-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .vehicle-card {
+    border-radius: 14px;
+  }
+  .vehicle-photo-wrap {
+    height: 125px;
+  }
+  .vehicle-card-content {
+    padding: 12px 10px;
+  }
+  .vehicle-card-content h3 {
+    font-size: 14.5px;
+    margin: 0 0 4px;
+  }
+  .vehicle-capacity {
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+  .vehicle-specs-pills {
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .vehicle-specs-pills span {
+    padding: 3px 6px;
+    font-size: 9.5px;
+  }
+  .vehicle-price-box {
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
+  .vehicle-price-box strong {
+    font-size: 13px;
+  }
+  .step-card {
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+  .step-number {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+  .step-card h3 {
+    font-size: 14px;
+    margin: 0 0 6px;
+  }
+  .step-card p {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .feature-card, .inclusion-card {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+  .feature-icon-box {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .feature-card h3, .inclusion-card h3 {
+    font-size: 14px;
+    margin: 0 0 6px;
+  }
+  .feature-card p, .inclusion-card p {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .trip-card {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 14px;
+  }
+  .trip-image-wrap {
+    height: 105px;
+    border-radius: 10px;
+  }
+  .trip-card-content h3 {
+    font-size: 13.5px;
+    margin: 0 0 4px;
+  }
+  .trip-route-desc {
+    font-size: 10.5px;
+    line-height: 1.4;
+    margin: 0 0 8px;
+  }
+  .mobile-sticky-bar {
+    display: grid;
+  }
+  .service-page {
+    padding-bottom: 120px;
+  }
+}
+
+
+/* =========================================================
+   PACKAGE DETAIL PAGES — MOBILE ONLY
+   Scoped only to Hamburger > Packages pages.
+   ========================================================= */
+@media (max-width: 768px) {
+  .package-detail-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-bottom: 96px;
+  }
+
+  /* Image first: make the package visual the primary entry point */
+  .package-detail-page .service-hero {
+    display: flex;
+    flex-direction: column;
+    padding: 14px 5% 28px;
+    min-height: auto;
+    gap: 0;
+  }
+
+  .package-detail-page .hero-backdrop-gradient {
+    display: none;
+  }
+
+  .package-detail-page .service-hero-image-card {
+    order: 1;
+    width: 100%;
+    height: 225px;
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .package-detail-page .service-hero-image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .package-detail-page .hero-image-glass-tag {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    width: auto;
+    padding: 9px 10px;
+    border-radius: 12px;
+  }
+
+  .package-detail-page .hero-image-glass-tag strong { font-size: 10px; }
+  .package-detail-page .hero-image-glass-tag small { font-size: 8px; }
+
+  .package-detail-page .service-hero-copy {
+    order: 2;
+    width: 100%;
+    padding: 20px 0 0;
+  }
+
+  .package-detail-page .hero-badge-pill {
+    display: none;
+  }
+
+  .package-detail-page .hero-kicker-tag {
+    font-size: 9px;
+    letter-spacing: .12em;
+    line-height: 1.4;
+  }
+
+  .package-detail-page .service-hero h1 {
+    font-size: clamp(28px, 8.2vw, 36px);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+    margin: 9px 0 11px;
+  }
+
+  .package-detail-page .hero-description {
+    font-size: 12px;
+    line-height: 1.62;
+    margin-bottom: 15px;
+  }
+
+  .package-detail-page .hero-trust-badges {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin: 0 0 15px;
+  }
+
+  .package-detail-page .hero-trust-badges span {
+    min-width: 0;
+    padding: 8px 7px;
+    font-size: 8.5px;
+    line-height: 1.3;
+  }
+
+  .package-detail-page .hero-trust-badges span:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .package-detail-page .service-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .package-detail-page .service-actions .button {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 9px 7px;
+    font-size: 9px;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  /* Consistent 5% page gutters */
+  .package-detail-page .section {
+    padding: 28px 5%;
+  }
+
+  .package-detail-page .service-quick-container {
+    padding-top: 0;
+    padding-bottom: 8px;
+  }
+
+  .package-detail-page .service-quick-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .package-detail-page .quick-item,
+  .package-detail-page .quick-action-box {
+    min-width: 0;
+    border-radius: 16px;
+    padding: 13px 10px;
+  }
+
+  .package-detail-page .quick-item {
+    display: block;
+  }
+
+  .package-detail-page .quick-item svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 7px;
+  }
+
+  .package-detail-page .quick-item b {
+    display: block;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .package-detail-page .quick-item small {
+    display: block;
+    font-size: 8.5px;
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+
+  .package-detail-page .quick-action-box {
+    grid-column: 1 / -1;
+  }
+
+  .package-detail-page .quick-book-btn {
+    min-height: 42px;
+    font-size: 10px;
+  }
+
+  /* About section: remove cramped desktop split */
+  .package-detail-page .service-about-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .package-detail-page .badge-pill {
+    font-size: 8px;
+    padding: 6px 9px;
+  }
+
+  .package-detail-page .service-about-grid h2,
+  .package-detail-page .section-header h2,
+  .package-detail-page .section-header-centered h2 {
+    font-size: 23px;
+    line-height: 1.18;
+    letter-spacing: -.02em;
+    margin: 8px 0;
+  }
+
+  .package-detail-page .lead-about-text,
+  .package-detail-page .section-header p,
+  .package-detail-page .section-header-centered p {
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .package-detail-page .service-about-points {
+    gap: 9px;
+  }
+
+  .package-detail-page .point-card {
+    padding: 13px 12px;
+    border-radius: 15px;
+    gap: 10px;
+  }
+
+  .package-detail-page .point-card strong { font-size: 12px; }
+  .package-detail-page .point-card p { font-size: 9.5px; line-height: 1.5; }
+
+  /* Booking steps become compact cards */
+  .package-detail-page .booking-steps-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .package-detail-page .step-card {
+    min-height: 0;
+    padding: 17px 15px 15px 56px;
+    position: relative;
+    border-radius: 16px;
+  }
+
+  .package-detail-page .step-number {
+    position: absolute;
+    left: 14px;
+    top: 16px;
+    font-size: 13px;
+  }
+
+  .package-detail-page .step-card h3 { font-size: 14px; }
+  .package-detail-page .step-card p { font-size: 10px; line-height: 1.5; }
+
+  /* Package vehicle options: clean one-card-per-row */
+  .package-detail-page .service-vehicles-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .package-detail-page .vehicle-card {
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .package-detail-page .vehicle-photo-wrap {
+    height: 175px;
+  }
+
+  .package-detail-page .vehicle-photo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 10px;
+  }
+
+  .package-detail-page .vehicle-card-content {
+    padding: 15px;
+  }
+
+  .package-detail-page .vehicle-card h3 { font-size: 18px; }
+  .package-detail-page .vehicle-capacity { font-size: 10px; }
+
+  .package-detail-page .vehicle-specs-pills {
+    gap: 6px;
+  }
+
+  .package-detail-page .vehicle-specs-pills span {
+    font-size: 8px;
+    padding: 6px 7px;
+  }
+
+  .package-detail-page .vehicle-price-box {
+    padding: 11px;
+    margin: 12px 0;
+  }
+
+  .package-detail-page .vehicle-price-box strong {
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .package-detail-page .vehicle-book-btn {
+    width: 100%;
+    min-height: 44px;
+    justify-content: center;
+    font-size: 10px;
+  }
+
+  /* Trips and features: compact 2-column browsing */
+  .package-detail-page .features-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .package-detail-page .feature-card {
+    min-width: 0;
+    padding: 14px 11px;
+    border-radius: 15px;
+  }
+
+  .package-detail-page .feature-card h3 { font-size: 12px; line-height: 1.3; }
+  .package-detail-page .feature-card p { font-size: 9px; line-height: 1.5; }
+
+  .package-detail-page .service-trip-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .package-detail-page .trip-card {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    min-height: 126px;
+    border-radius: 17px;
+    overflow: hidden;
+  }
+
+  .package-detail-page .trip-image-wrap {
+    height: 100%;
+    min-height: 126px;
+  }
+
+  .package-detail-page .trip-image-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .package-detail-page .trip-card-content {
+    padding: 13px 12px;
+    min-width: 0;
+  }
+
+  .package-detail-page .trip-meta-tag { font-size: 8px; }
+  .package-detail-page .trip-card h3 { font-size: 14px; margin: 4px 0; }
+  .package-detail-page .trip-route-desc { font-size: 9.5px; line-height: 1.4; }
+  .package-detail-page .trip-plan-btn { font-size: 9px; margin-top: 7px; }
+
+  /* Inclusion cards and FAQ */
+  .package-detail-page .inclusions-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .package-detail-page .inclusion-card {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .package-detail-page .inclusion-card h3 { font-size: 13px; }
+  .package-detail-page .inclusion-card p { font-size: 10px; line-height: 1.55; }
+
+  .package-detail-page .service-faq-item {
+    border-radius: 14px;
+    margin-bottom: 8px;
+  }
+
+  .package-detail-page .service-faq-summary {
+    padding: 14px 13px;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .package-detail-page .service-faq-answer {
+    padding: 0 13px 14px;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 390px) {
+  .package-detail-page .service-hero-image-card { height: 205px; }
+  .package-detail-page .service-hero h1 { font-size: 27px; }
+  .package-detail-page .hero-trust-badges { grid-template-columns: 1fr; }
+  .package-detail-page .hero-trust-badges span:last-child { grid-column: auto; }
+  .package-detail-page .features-grid { gap: 8px; }
+  .package-detail-page .feature-card { padding: 12px 9px; }
+  .package-detail-page .trip-card { grid-template-columns: 96px minmax(0, 1fr); }
+}
+
+
+/* =========================================================
+   MOBILE QUICK CARDS — SPACING CORRECTION
+   Removes the oversized empty padding visible in service/package cards.
+   ========================================================= */
+@media (max-width: 640px) {
+  .service-page .service-quick-container {
+    padding: 18px 5% 12px !important;
+  }
+
+  .service-page .service-quick-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .service-page .quick-item {
+    min-width: 0 !important;
+    min-height: 132px !important;
+    padding: 16px 14px !important;
+    margin: 0 !important;
+    border: 1px solid var(--line) !important;
+    border-radius: 18px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+
+  .service-page .quick-item > svg {
+    width: 24px !important;
+    height: 24px !important;
+    margin: 0 !important;
+    flex: 0 0 auto;
+  }
+
+  .service-page .quick-item > div {
+    min-width: 0;
+  }
+
+  .service-page .quick-item b {
+    font-size: 12px !important;
+    line-height: 1.32 !important;
+    margin: 0 !important;
+  }
+
+  .service-page .quick-item small {
+    font-size: 9.5px !important;
+    line-height: 1.45 !important;
+    margin-top: 5px !important;
+  }
+
+  /* The quote action should be a deliberate full-width row, not a stretched empty card */
+  .service-page .quick-action-box {
+    grid-column: 1 / -1 !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .service-page .quick-book-btn {
+    width: 100% !important;
+    min-height: 46px !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .service-page .quick-item {
+    min-height: 124px !important;
+    padding: 14px 11px !important;
+  }
+
+  .service-page .quick-item b {
+    font-size: 11px !important;
+  }
+
+  .service-page .quick-item small {
+    font-size: 9px !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE HERO TRUST + CTA REFINEMENT
+   Compact the three trust rows and remove the bulky button spacing.
+   ========================================================= */
+@media (max-width: 640px) {
+  .service-page .service-hero-copy {
+    padding-bottom: 0 !important;
+  }
+
+  .service-page .hero-description {
+    margin: 0 0 12px !important;
+    font-size: 12px !important;
+    line-height: 1.58 !important;
+  }
+
+  .service-page .hero-trust-badges {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+    margin: 0 0 14px !important;
+    padding: 0 !important;
+  }
+
+  .service-page .hero-trust-badges span {
+    min-height: 40px !important;
+    padding: 9px 11px !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 10px !important;
+    line-height: 1.25 !important;
+  }
+
+  .service-page .hero-trust-badges span svg {
+    width: 17px !important;
+    height: 17px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .service-page .hero-trust-badges span:last-child {
+    grid-column: auto !important;
+  }
+
+  .service-page .service-actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .service-page .service-actions .button {
+    min-width: 0 !important;
+    min-height: 48px !important;
+    padding: 9px 8px !important;
+    border-radius: 13px !important;
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    text-align: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+  }
+
+  .service-page .service-actions .button svg {
+    width: 17px !important;
+    height: 17px !important;
+    flex: 0 0 auto !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .service-page .hero-trust-badges span {
+    min-height: 38px !important;
+    padding: 8px 10px !important;
+    font-size: 9px !important;
+  }
+
+  .service-page .service-actions {
+    gap: 8px !important;
+  }
+
+  .service-page .service-actions .button {
+    min-height: 46px !important;
+    padding: 8px 6px !important;
+    font-size: 8.5px !important;
+  }
+}
+
+
+/* =========================================================
+   TAXIS IN TIRUPATI / TIRUPATI CABS — MOBILE PADDING FIX
+   Scoped to taxi service pages only.
+   ========================================================= */
+@media (max-width: 768px) {
+  .taxi-service-page {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding-bottom: 112px;
+  }
+
+  /* Every major section gets a consistent mobile gutter */
+  .taxi-service-page .section {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 26px 5% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Pale sections were visually touching the viewport edges */
+  .taxi-service-page .section.pale {
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+  }
+
+  /* Keep section headings aligned with their actual content */
+  .taxi-service-page .section-header,
+  .taxi-service-page .section-header-centered {
+    width: 100%;
+    margin: 0 0 15px !important;
+    padding: 0 !important;
+  }
+
+  .taxi-service-page .section-header h2,
+  .taxi-service-page .section-header-centered h2 {
+    margin: 8px 0 !important;
+  }
+
+  /* Route table/card: the exact area visible in your screenshot */
+  .taxi-service-page .route-table-card {
+    width: 100% !important;
+    margin: 0 !important;
+    border-radius: 18px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  .taxi-service-page .route-table-grid {
+    width: 100% !important;
+  }
+
+  .taxi-service-page .route-row-item {
+    min-width: 0 !important;
+    padding: 14px 12px !important;
+    gap: 8px !important;
+  }
+
+  /* Fare note must align to the same 5% content rhythm */
+  .taxi-service-page .fare-note-box {
+    width: 100% !important;
+    margin: 18px 0 0 !important;
+    padding: 14px !important;
+    box-sizing: border-box !important;
+    border-radius: 16px !important;
+  }
+
+  /* Vehicle and trip selections should never sit flush against an edge */
+  .taxi-service-page .service-vehicles-grid,
+  .taxi-service-page .service-trip-grid,
+  .taxi-service-page .features-grid,
+  .taxi-service-page .inclusions-grid,
+  .taxi-service-page .booking-steps-grid,
+  .taxi-service-page .service-about-grid {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .taxi-service-page .vehicle-card,
+  .taxi-service-page .trip-card,
+  .taxi-service-page .feature-card,
+  .taxi-service-page .inclusion-card,
+  .taxi-service-page .step-card,
+  .taxi-service-page .point-card,
+  .taxi-service-page .service-faq-item {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* The quick selection block keeps its own compact spacing */
+  .taxi-service-page .service-quick-container {
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .taxi-service-page .section {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+  }
+
+  .taxi-service-page .route-row-item {
+    padding: 13px 10px !important;
+  }
+}
