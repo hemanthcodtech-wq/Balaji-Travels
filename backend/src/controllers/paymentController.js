@@ -1,11 +1,30 @@
 import { sql } from '../config/db.js';
 import { generateInitiateHash, verifyResponseHash } from '../utils/easebuzz.js';
+import { sendPaymentConfirmationEmails } from '../utils/emailService.js';
 
 const EASEBUZZ_KEY = process.env.EASEBUZZ_KEY || 'PO2QJZOI4';
 const EASEBUZZ_SALT = process.env.EASEBUZZ_SALT || 'Y2R6AQMIE';
 const EASEBUZZ_ENV = process.env.EASEBUZZ_ENV || 'test';
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:5000';
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const BACKEND_URL = process.env.BACKEND_URL || 'https://balaji-travels-7mpf.vercel.app';
+const DEFAULT_FRONTEND_URL = process.env.FRONTEND_URL || 'https://balaji-travels-six.vercel.app';
+
+// Helper to determine accurate frontend return URL
+const getTargetFrontendUrl = (req, fallbackUrl) => {
+  // 1. If explicit query parameter or stored in booking
+  if (fallbackUrl && typeof fallbackUrl === 'string' && fallbackUrl.startsWith('http')) {
+    return fallbackUrl.replace(/\/+$/, '');
+  }
+  // 2. If client provided origin in headers (e.g. from axios/fetch)
+  const reqOrigin = req.headers?.origin || req.headers?.referer;
+  if (reqOrigin) {
+    try {
+      const parsed = new URL(reqOrigin);
+      return `${parsed.protocol}//${parsed.host}`;
+    } catch {}
+  }
+  // 3. Environment or Production domain
+  return DEFAULT_FRONTEND_URL.replace(/\/+$/, '');
+};
 
 const EASEBUZZ_INITIATE_URL = EASEBUZZ_ENV === 'prod'
   ? 'https://pay.easebuzz.in/payment/initiateLink'
@@ -53,6 +72,10 @@ export const initiatePayment = async (req, res) => {
     const cleanFirstName = firstname.trim().replace(/[^a-zA-Z0-9\s]/g, '') || 'Devotee';
     const cleanProductInfo = productinfo.trim().replace(/[^a-zA-Z0-9\s_-]/g, '').slice(0, 95) || 'Cab Booking';
 
+    // Determine origin return URL and pass via udf5 so callback knows where to redirect
+    const returnUrl = req.body.return_url || req.headers?.origin || DEFAULT_FRONTEND_URL;
+    const resolvedUdf5 = (udf5 || returnUrl).toString().slice(0, 100);
+
     // Generate SHA-512 Hash
     const hash = generateInitiateHash({
       key: EASEBUZZ_KEY,
@@ -65,7 +88,7 @@ export const initiatePayment = async (req, res) => {
       udf2,
       udf3,
       udf4,
-      udf5,
+      udf5: resolvedUdf5,
       salt: EASEBUZZ_SALT,
     });
 
@@ -191,14 +214,38 @@ export const handleEasebuzzCallback = async (req, res) => {
           payment_txnid = ${txnid}
         WHERE payment_txnid = ${txnid};
       `;
+
+      // Trigger automatic invoice email to customer and admin
+      if (paymentStatus === 'SUCCESS') {
+        const paymentRecords = await sql`
+          SELECT * FROM payments WHERE txnid = ${txnid} LIMIT 1;
+        `;
+        const record = paymentRecords?.[0] || {};
+
+        sendPaymentConfirmationEmails({
+          txnid,
+          easepayid: easepayid || record.easebuzz_id,
+          amount: amount || record.amount,
+          firstname: record.firstname || callbackData.firstname || 'Customer',
+          email: record.email || callbackData.email,
+          phone: record.phone || callbackData.phone,
+          productinfo: record.productinfo || callbackData.productinfo || 'Cab & Tour Booking',
+          mode: mode || record.payment_mode || 'Online Gateway',
+          date: record.updated_at || new Date(),
+        }).catch(err => console.error('Background email dispatch error:', err));
+      }
     }
 
+    // Determine accurate frontend redirect URL (e.g. https://balaji-travels-six.vercel.app)
+    const frontendTarget = getTargetFrontendUrl(req, callbackData.udf5 || req.query?.return_url);
+
     // Redirect user back to frontend confirmation page with query params
-    const redirectUrl = `${FRONTEND_URL}/payment-status?status=${paymentStatus}&txnid=${txnid}&easebuzz_id=${easepayid || ''}&amount=${amount || ''}`;
+    const redirectUrl = `${frontendTarget}/payment-status?status=${paymentStatus}&txnid=${txnid}&easebuzz_id=${easepayid || ''}&amount=${amount || ''}`;
     return res.redirect(redirectUrl);
   } catch (error) {
     console.error('Error handling Easebuzz callback:', error);
-    return res.redirect(`${FRONTEND_URL}/payment-status?status=FAILED&message=VerificationError`);
+    const frontendTarget = getTargetFrontendUrl(req);
+    return res.redirect(`${frontendTarget}/payment-status?status=FAILED&message=VerificationError`);
   }
 };
 

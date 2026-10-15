@@ -410,6 +410,7 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
         udf1: formData.pickup,
         udf2: formData.date,
         udf3: formData.vehicle,
+        return_url: window.location.origin,
       });
 
       if (res && res.success && res.payment_url) {
