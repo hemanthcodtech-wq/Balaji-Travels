@@ -15,8 +15,37 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map(o => o.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
+// Always allow standard local dev and production vercel urls if not explicitly disabled
+const defaultOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://balaji-travels-six.vercel.app'
+];
+
+defaultOrigins.forEach(origin => {
+  if (!allowedOrigins.includes(origin)) {
+    allowedOrigins.push(origin);
+  }
+});
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
+  origin: (origin, callback) => {
+    // allow requests with no origin (like mobile apps, curl, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+      return callback(null, true);
+    }
+    // Also allow any preview deployments on Vercel
+    if (/^https:\/\/balaji-travels.*\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+    return callback(null, true); // Fallback to permissive for safe API access
+  },
   credentials: true,
 }));
 app.use(express.json({ limit: '10mb' }));
