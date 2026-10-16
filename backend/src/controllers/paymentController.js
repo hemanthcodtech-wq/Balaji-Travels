@@ -263,14 +263,49 @@ export const handleEasebuzzCallback = async (req, res) => {
       frontendTarget = getTargetFrontendUrl(req, req.query?.return_url);
     }
 
-    // Redirect user back to frontend confirmation page with query params
-    // Use HTTP 303 (See Other) so the browser changes the HTTP POST from Easebuzz into a GET for the React frontend
+    // Return HTML page with window.location breakout and Meta refresh to guarantee full top-level browser navigation
     const redirectUrl = `${frontendTarget}/payment-status?status=${paymentStatus}&txnid=${txnid}&easebuzz_id=${easepayid || ''}&amount=${amount || ''}`;
-    return res.redirect(303, redirectUrl);
+    
+    return res.status(200).send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8" />
+          <meta http-equiv="refresh" content="0;url=${redirectUrl}" />
+          <title>Redirecting to Confirmation...</title>
+          <script type="text/javascript">
+            try {
+              if (window.top && window.top !== window.self) {
+                window.top.location.href = "${redirectUrl}";
+              } else {
+                window.location.href = "${redirectUrl}";
+              }
+            } catch (e) {
+              window.location.href = "${redirectUrl}";
+            }
+          </script>
+        </head>
+        <body style="font-family: sans-serif; text-align: center; padding: 50px 20px;">
+          <h2>Processing Payment Confirmation...</h2>
+          <p>Please wait while we transfer you back to your booking confirmation.</p>
+          <p>If you are not redirected automatically, <a href="${redirectUrl}">click here</a>.</p>
+        </body>
+      </html>
+    `);
   } catch (error) {
     console.error('Error handling Easebuzz callback:', error);
     const frontendTarget = getTargetFrontendUrl(req);
-    return res.redirect(303, `${frontendTarget}/payment-status?status=FAILED&message=VerificationError`);
+    const failUrl = `${frontendTarget}/payment-status?status=FAILED&message=VerificationError`;
+    return res.status(200).send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta http-equiv="refresh" content="0;url=${failUrl}" />
+          <script>window.top.location.href = "${failUrl}";</script>
+        </head>
+        <body>Redirecting... <a href="${failUrl}">Click here</a></body>
+      </html>
+    `);
   }
 };
 
