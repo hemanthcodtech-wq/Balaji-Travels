@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Upload, Loader2, CheckCircle2, Image as ImageIcon, AlertCircle } from 'lucide-react';
 
-const API_BASE = import.meta.env?.VITE_BACKEND_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env?.VITE_BACKEND_URL || 'https://balaji-travels-7mpf.vercel.app/api';
 
 export default function ImageUploadInput({ label = 'Image Cloudinary URL *', value, onChange, placeholder = 'https://res.cloudinary.com/...' }) {
   const [isUploading, setIsUploading] = useState(false);

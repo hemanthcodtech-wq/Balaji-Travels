@@ -10,7 +10,7 @@ const DEFAULT_EASEBUZZ_CONFIG = {
   currency: 'INR'
 };
 
-const BACKEND_API_BASE = import.meta.env?.VITE_BACKEND_URL || 'http://localhost:5000/api';
+const BACKEND_API_BASE = import.meta.env?.VITE_BACKEND_URL || 'https://balaji-travels-7mpf.vercel.app/api';
 
 export const getEasebuzzConfig = () => {
   try {
@@ -25,6 +25,8 @@ export const saveEasebuzzConfig = (config) => {
   try {
     localStorage.setItem('easebuzz_config', JSON.stringify(config));
     return true;
+
+    
   } catch (e) {
     console.error('Failed to save Easebuzz config', e);
     return false;
