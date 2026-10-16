@@ -13,16 +13,22 @@ export const initializeDatabase = async () => {
         id VARCHAR(100) PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         phone VARCHAR(50) NOT NULL,
+        email VARCHAR(255),
         "from" TEXT,
         "to" TEXT,
         date VARCHAR(50),
         trip VARCHAR(100),
         vehicle VARCHAR(100),
         passengers VARCHAR(50),
+        message TEXT,
         status VARCHAR(50) DEFAULT 'Pending',
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
     `;
+
+    // Ensure email & message columns exist if the table was created previously without them
+    await sql`ALTER TABLE queries ADD COLUMN IF NOT EXISTS email VARCHAR(255);`;
+    await sql`ALTER TABLE queries ADD COLUMN IF NOT EXISTS message TEXT;`;
 
     // 2. Bookings table
     await sql`
@@ -171,6 +177,7 @@ export const initializeDatabase = async () => {
         email VARCHAR(255),
         phone VARCHAR(50) NOT NULL,
         productinfo TEXT NOT NULL,
+        return_url TEXT,
         status VARCHAR(50) DEFAULT 'initiated',
         payment_mode VARCHAR(100),
         error_message TEXT,
@@ -178,6 +185,25 @@ export const initializeDatabase = async () => {
         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
       );
+    `;
+
+    // 10. Admins table for persistent credentials
+    await sql`
+      CREATE TABLE IF NOT EXISTS admins (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(100) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        role VARCHAR(50) DEFAULT 'Administrator',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+    // Seed default admin if table is empty (admin / admin123)
+    await sql`
+      INSERT INTO admins (username, password_hash, role)
+      VALUES ('admin', 'admin123', 'Administrator')
+      ON CONFLICT (username) DO NOTHING;
     `;
 
     console.log('✅ Neon DB comprehensive tables initialized successfully.');

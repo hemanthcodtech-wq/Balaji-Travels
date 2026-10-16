@@ -72,9 +72,17 @@ export const initiatePayment = async (req, res) => {
     const cleanFirstName = firstname.trim().replace(/[^a-zA-Z0-9\s]/g, '') || 'Devotee';
     const cleanProductInfo = productinfo.trim().replace(/[^a-zA-Z0-9\s_-]/g, '').slice(0, 95) || 'Cab Booking';
 
-    // Determine origin return URL and pass via udf5 so callback knows where to redirect
+    // Helper to sanitize UDF values to clean alphanumeric + spaces/hyphens/underscores (Easebuzz rejects special chars like parentheses)
+    const cleanUdf = (val, maxLen = 95) => (val || '').toString().trim().replace(/[^a-zA-Z0-9\s_-]/g, '').slice(0, maxLen);
+
+    // Determine origin return URL and safely sanitize udf fields
     const returnUrl = req.body.return_url || req.headers?.origin || DEFAULT_FRONTEND_URL;
-    const resolvedUdf5 = (udf5 || returnUrl).toString().slice(0, 100);
+    const cleanUdf1 = cleanUdf(udf1);
+    const cleanUdf2 = cleanUdf(udf2);
+    const cleanUdf3 = cleanUdf(udf3);
+    const cleanUdf4 = cleanUdf(udf4);
+    // Easebuzz UDFs only accept alphanumeric characters, spaces, underscores, hyphens (slashes, colons, dots in URLs will be rejected)
+    const cleanUdf5 = cleanUdf(udf5);
 
     // Generate SHA-512 Hash
     const hash = generateInitiateHash({
@@ -84,18 +92,18 @@ export const initiatePayment = async (req, res) => {
       productinfo: cleanProductInfo,
       firstname: cleanFirstName,
       email: email || 'guest@example.com',
-      udf1,
-      udf2,
-      udf3,
-      udf4,
-      udf5: resolvedUdf5,
+      udf1: cleanUdf1,
+      udf2: cleanUdf2,
+      udf3: cleanUdf3,
+      udf4: cleanUdf4,
+      udf5: cleanUdf5,
       salt: EASEBUZZ_SALT,
     });
 
     const surl = `${BACKEND_URL}/api/payments/callback`;
     const furl = `${BACKEND_URL}/api/payments/callback`;
 
-    // Persist initiated payment in Neon DB
+    // Persist initiated payment in Neon DB (storing the exact returnUrl securely)
     if (sql) {
       await sql`
         INSERT INTO payments (
@@ -105,6 +113,7 @@ export const initiatePayment = async (req, res) => {
           email,
           phone,
           productinfo,
+          return_url,
           status
         ) VALUES (
           ${txnid},
@@ -113,9 +122,11 @@ export const initiatePayment = async (req, res) => {
           ${email || null},
           ${cleanPhone},
           ${cleanProductInfo},
+          ${returnUrl},
           'initiated'
         )
-        ON CONFLICT (txnid) DO NOTHING;
+        ON CONFLICT (txnid) DO UPDATE SET
+          return_url = EXCLUDED.return_url;
       `;
     }
 
@@ -131,11 +142,11 @@ export const initiatePayment = async (req, res) => {
     params.append('surl', surl);
     params.append('furl', furl);
     params.append('hash', hash);
-    params.append('udf1', udf1);
-    params.append('udf2', udf2);
-    params.append('udf3', udf3);
-    params.append('udf4', udf4);
-    params.append('udf5', udf5);
+    params.append('udf1', cleanUdf1);
+    params.append('udf2', cleanUdf2);
+    params.append('udf3', cleanUdf3);
+    params.append('udf4', cleanUdf4);
+    params.append('udf5', cleanUdf5);
 
     // Call Easebuzz initiateLink API
     const response = await fetch(EASEBUZZ_INITIATE_URL, {
@@ -236,16 +247,30 @@ export const handleEasebuzzCallback = async (req, res) => {
       }
     }
 
-    // Determine accurate frontend redirect URL (e.g. https://balaji-travels-six.vercel.app)
-    const frontendTarget = getTargetFrontendUrl(req, callbackData.udf5 || req.query?.return_url);
+    // Determine accurate frontend redirect URL from saved DB record, callback data, or request headers
+    let frontendTarget = DEFAULT_FRONTEND_URL.replace(/\/+$/, '');
+    if (sql && txnid) {
+      try {
+        const rows = await sql`SELECT return_url FROM payments WHERE txnid = ${txnid} LIMIT 1;`;
+        if (rows?.[0]?.return_url) {
+          frontendTarget = rows[0].return_url.replace(/\/+$/, '');
+        }
+      } catch (err) {
+        console.warn('Could not read return_url from payments:', err);
+      }
+    }
+    if (!frontendTarget || frontendTarget === DEFAULT_FRONTEND_URL.replace(/\/+$/, '')) {
+      frontendTarget = getTargetFrontendUrl(req, req.query?.return_url);
+    }
 
     // Redirect user back to frontend confirmation page with query params
+    // Use HTTP 303 (See Other) so the browser changes the HTTP POST from Easebuzz into a GET for the React frontend
     const redirectUrl = `${frontendTarget}/payment-status?status=${paymentStatus}&txnid=${txnid}&easebuzz_id=${easepayid || ''}&amount=${amount || ''}`;
-    return res.redirect(redirectUrl);
+    return res.redirect(303, redirectUrl);
   } catch (error) {
     console.error('Error handling Easebuzz callback:', error);
     const frontendTarget = getTargetFrontendUrl(req);
-    return res.redirect(`${frontendTarget}/payment-status?status=FAILED&message=VerificationError`);
+    return res.redirect(303, `${frontendTarget}/payment-status?status=FAILED&message=VerificationError`);
   }
 };
 

@@ -2,7 +2,21 @@ import { sql } from '../config/db.js';
 
 export const createQuery = async (req, res) => {
   try {
-    const { name, email, phone, service_type, message } = req.body;
+    const {
+      id,
+      name,
+      email,
+      phone,
+      service_type,
+      message,
+      from,
+      to,
+      date,
+      trip,
+      vehicle,
+      passengers,
+      status = 'Pending'
+    } = req.body;
 
     if (!name || !phone) {
       return res.status(400).json({ success: false, message: 'Name and phone are required.' });
@@ -12,9 +26,48 @@ export const createQuery = async (req, res) => {
       return res.status(503).json({ success: false, message: 'Database is not configured yet. Please set DATABASE_URL.' });
     }
 
+    const queryId = id || `Q-${Date.now().toString().slice(-4)}`;
+    const destination = to || service_type || null;
+    const origin = from || null;
+    const travelDate = date || null;
+    const tripType = trip || null;
+    const selectedVehicle = vehicle || null;
+    const passengerCount = passengers ? String(passengers) : null;
+    const queryEmail = email || null;
+    const queryMessage = message || null;
+
     const result = await sql`
-      INSERT INTO queries (name, email, phone, service_type, message)
-      VALUES (${name}, ${email || null}, ${phone}, ${service_type || null}, ${message || null})
+      INSERT INTO queries (
+        id,
+        name,
+        phone,
+        email,
+        "from",
+        "to",
+        date,
+        trip,
+        vehicle,
+        passengers,
+        message,
+        status
+      )
+      VALUES (
+        ${queryId},
+        ${name},
+        ${phone},
+        ${queryEmail},
+        ${origin},
+        ${destination},
+        ${travelDate},
+        ${tripType},
+        ${selectedVehicle},
+        ${passengerCount},
+        ${queryMessage},
+        ${status}
+      )
+      ON CONFLICT (id) DO UPDATE SET
+        status = EXCLUDED.status,
+        phone = EXCLUDED.phone
       RETURNING *;
     `;
 
