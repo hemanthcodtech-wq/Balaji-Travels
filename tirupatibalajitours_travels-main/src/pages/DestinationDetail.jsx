@@ -225,21 +225,6 @@ export default function DestinationDetail() {
                       <span className="price-label">Indicative Tour Fare</span>
                     </div>
 
-                    <div className="vehicle-rate-sheet-box">
-                      <div className="rate-row">
-                        <span>Local (8h / 80km):</span>
-                        <strong>{vInfo.local}</strong>
-                      </div>
-                      <div className="rate-row">
-                        <span>Local (12h / 150km):</span>
-                        <strong>{vInfo.localLong}</strong>
-                      </div>
-                      <div className="rate-row highlight-rate">
-                        <span>Outstation Tariff (Min 300km/day):</span>
-                        <strong>{vInfo.outstation} <small>(Min {vInfo.minimum})</small></strong>
-                      </div>
-                    </div>
-
                     <div className="tariff-card-actions">
                       <button 
                         type="button" 

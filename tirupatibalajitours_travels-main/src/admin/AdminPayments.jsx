@@ -1,11 +1,9 @@
 import { CreditCard, CheckCircle2, ShieldCheck, Download, Search } from 'lucide-react';
 import { useData } from '../context/DataContext';
-import { getEasebuzzConfig } from '../services/easebuzzService';
 import './Admin.css';
 
 export default function AdminPayments() {
   const { payments } = useData();
-  const config = getEasebuzzConfig();
 
   const totalCollected = payments
     .filter(p => p.status === 'SUCCESS')
@@ -26,7 +24,7 @@ export default function AdminPayments() {
           </div>
           <div style={{ background: 'rgba(255,255,255,0.15)', padding: '0.5rem 1rem', borderRadius: 10, backdropFilter: 'blur(8px)', fontSize: '0.85rem' }}>
             <ShieldCheck size={16} style={{ display: 'inline', marginRight: 6, verticalAlign: 'middle' }} />
-            Environment Mode: <strong>{config.environment.toUpperCase()}</strong> | Merchant: <strong>{config.merchantKey.slice(0, 12)}...</strong>
+            Active Gateway: <strong>EASEBUZZ ONLINE</strong>
           </div>
         </div>
       </div>

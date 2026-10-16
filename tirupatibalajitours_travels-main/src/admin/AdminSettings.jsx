@@ -1,49 +1,41 @@
 import { useState } from 'react';
-import { Settings, Key, ShieldAlert, CheckCircle2, RefreshCw, Loader2 } from 'lucide-react';
+import { Key, ShieldAlert, CheckCircle2, RefreshCw, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
-import { getEasebuzzConfig, saveEasebuzzConfig } from '../services/easebuzzService';
 import './Admin.css';
 
 export default function AdminSettings() {
   const { credentials, updateCredentials } = useAuth();
   const { resetToDefaults } = useData();
 
-  // Easebuzz state
-  const [easebuzz, setEasebuzz] = useState(getEasebuzzConfig());
-  const [easebuzzSaved, setEasebuzzSaved] = useState(false);
-  const [isSavingEasebuzz, setIsSavingEasebuzz] = useState(false);
-
   // Password state
   const [adminUser, setAdminUser] = useState(credentials.username);
   const [newPassword, setNewPassword] = useState('');
   const [passwordSaved, setPasswordSaved] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSaveEasebuzz = (e) => {
+  const handleSavePassword = async (e) => {
     e.preventDefault();
-    setIsSavingEasebuzz(true);
-    setTimeout(() => {
-      saveEasebuzzConfig(easebuzz);
-      setIsSavingEasebuzz(false);
-      setEasebuzzSaved(true);
-      setTimeout(() => setEasebuzzSaved(false), 3000);
-    }, 400);
-  };
-
-  const handleSavePassword = (e) => {
-    e.preventDefault();
+    setErrorMessage('');
     if (newPassword.trim().length >= 4) {
       setIsSavingPassword(true);
-      setTimeout(() => {
-        updateCredentials(adminUser, newPassword);
+      try {
+        const res = await updateCredentials(adminUser, newPassword);
+        if (res.success) {
+          setPasswordSaved(true);
+          setNewPassword('');
+          setTimeout(() => setPasswordSaved(false), 4000);
+        } else {
+          setErrorMessage(res.message || 'Failed to update credentials in database.');
+        }
+      } catch (err) {
+        setErrorMessage('Server connection error updating credentials.');
+      } finally {
         setIsSavingPassword(false);
-        setPasswordSaved(true);
-        setNewPassword('');
-        setTimeout(() => setPasswordSaved(false), 3000);
-      }, 400);
+      }
     } else {
-      alert('Password must be at least 4 characters long.');
+      setErrorMessage('Password must be at least 4 characters long.');
     }
   };
 
@@ -56,63 +48,7 @@ export default function AdminSettings() {
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: '1.5rem' }}>
-      {/* Easebuzz Payment Gateway Setup */}
-      <div className="admin-card">
-        <div className="card-top-bar">
-          <h2>Easebuzz Payment Gateway Setup</h2>
-        </div>
-
-        {easebuzzSaved && (
-          <div className="status-badge success" style={{ marginBottom: '1rem', width: '100%', textAlign: 'center', padding: '0.6rem' }}>
-            <CheckCircle2 size={16} style={{ display: 'inline', marginRight: 4 }} /> Easebuzz API Config Saved Successfully!
-          </div>
-        )}
-
-        <form onSubmit={handleSaveEasebuzz} className="modal-form-grid" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          <div>
-            <label>Merchant Key *</label>
-            <input 
-              type="text" 
-              required
-              value={easebuzz.merchantKey}
-              onChange={e => setEasebuzz({ ...easebuzz, merchantKey: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label>Salt Key *</label>
-            <input 
-              type="password" 
-              required
-              value={easebuzz.salt}
-              onChange={e => setEasebuzz({ ...easebuzz, salt: e.target.value })}
-            />
-          </div>
-
-          <div>
-            <label>Environment Mode *</label>
-            <select 
-              value={easebuzz.environment}
-              onChange={e => setEasebuzz({ ...easebuzz, environment: e.target.value })}
-            >
-              <option value="test">Sandbox / Test Mode</option>
-              <option value="prod">Production / Live Mode</option>
-            </select>
-          </div>
-
-          <button 
-            type="submit" 
-            disabled={isSavingEasebuzz}
-            className="btn-primary-admin" 
-            style={{ marginTop: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-          >
-            {isSavingEasebuzz && <Loader2 size={16} className="spin-animate" />}
-            {isSavingEasebuzz ? 'Saving Configuration...' : 'Save Gateway Configuration'}
-          </button>
-        </form>
-      </div>
-
+    <div style={{ maxWidth: '640px', margin: '0 auto' }}>
       {/* Admin Credentials & Reset */}
       <div className="admin-card">
         <div className="card-top-bar">
@@ -121,7 +57,13 @@ export default function AdminSettings() {
 
         {passwordSaved && (
           <div className="status-badge success" style={{ marginBottom: '1rem', width: '100%', textAlign: 'center', padding: '0.6rem' }}>
-            <CheckCircle2 size={16} style={{ display: 'inline', marginRight: 4 }} /> Admin Credentials Updated!
+            <CheckCircle2 size={16} style={{ display: 'inline', marginRight: 4 }} /> Admin Credentials Updated in Database!
+          </div>
+        )}
+
+        {errorMessage && (
+          <div style={{ marginBottom: '1rem', width: '100%', textAlign: 'center', padding: '0.6rem', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '8px', fontSize: '0.85rem' }}>
+            {errorMessage}
           </div>
         )}
 

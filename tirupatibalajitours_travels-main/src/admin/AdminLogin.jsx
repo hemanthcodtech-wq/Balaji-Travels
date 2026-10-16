@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Lock, User, KeyRound, AlertCircle, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Lock, User, AlertCircle, ArrowRight, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import './Admin.css';
 
@@ -11,6 +11,8 @@ export default function AdminLogin() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     document.body.classList.add('admin-body-active');
     return () => {
@@ -18,21 +20,22 @@ export default function AdminLogin() {
     };
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    const res = login(username, password);
-    if (res.success) {
-      navigate('/admin/dashboard', { replace: true });
-    } else {
-      setError(res.message);
+    setIsLoading(true);
+    try {
+      const res = await login(username, password);
+      if (res.success) {
+        navigate('/admin/dashboard', { replace: true });
+      } else {
+        setError(res.message || 'Invalid username or password');
+      }
+    } catch (err) {
+      setError('Connection error logging in.');
+    } finally {
+      setIsLoading(false);
     }
-  };
-
-  const handleDemoFill = () => {
-    setUsername('admin');
-    setPassword('admin123');
-    setError('');
   };
 
   return (
@@ -82,21 +85,11 @@ export default function AdminLogin() {
             </div>
           </div>
 
-          <button type="submit" className="admin-submit-btn">
-            Sign In to Admin Panel <ArrowRight size={18} />
+          <button type="submit" disabled={isLoading} className="admin-submit-btn" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            {isLoading && <Loader2 size={18} className="spin-animate" />}
+            {isLoading ? 'Authenticating...' : 'Sign In to Admin Panel'} {!isLoading && <ArrowRight size={18} />}
           </button>
         </form>
-
-        <div className="admin-demo-hint">
-          <div className="demo-hint-header">
-            <KeyRound size={16} />
-            <span>Default Demo Credentials:</span>
-          </div>
-          <div className="demo-credentials-badge" onClick={handleDemoFill} title="Click to autofill">
-            <code>admin</code> / <code>admin123</code>
-            <small>(Click to autofill)</small>
-          </div>
-        </div>
       </div>
     </div>
   );
