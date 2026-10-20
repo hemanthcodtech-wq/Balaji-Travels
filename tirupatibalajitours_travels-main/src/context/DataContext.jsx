@@ -23,100 +23,93 @@ export function DataProvider({ children }) {
     setSelectedBooking(bookingData);
   };
 
-  // Fetch all real-time data from Neon DB backend on mount
-  useEffect(() => {
-    let isMounted = true;
+  // Fetch all real-time data from Neon DB backend
+  const loadNeonData = async () => {
+    try {
+      const fetchOptions = { cache: 'no-store' };
+      const [fleetsRes, toursRes, destsRes, blogsRes, queriesRes, paymentsRes] = await Promise.all([
+        fetch(`${API_BASE}/content/fleets`, fetchOptions).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`${API_BASE}/content/tours`, fetchOptions).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`${API_BASE}/content/destinations`, fetchOptions).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`${API_BASE}/content/blogs`, fetchOptions).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`${API_BASE}/queries`, fetchOptions).then(r => r.ok ? r.json() : null).catch(() => null),
+        fetch(`${API_BASE}/payments`, fetchOptions).then(r => r.ok ? r.json() : null).catch(() => null),
+      ]);
 
-    async function loadNeonData() {
-      try {
-        const [fleetsRes, toursRes, destsRes, blogsRes, queriesRes, paymentsRes] = await Promise.all([
-          fetch(`${API_BASE}/content/fleets`).then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch(`${API_BASE}/content/tours`).then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch(`${API_BASE}/content/destinations`).then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch(`${API_BASE}/content/blogs`).then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch(`${API_BASE}/queries`).then(r => r.ok ? r.json() : null).catch(() => null),
-          fetch(`${API_BASE}/payments`).then(r => r.ok ? r.json() : null).catch(() => null),
-        ]);
-
-        if (!isMounted) return;
-
-        if (fleetsRes?.success && fleetsRes.data?.length > 0) {
-          // Normalize DB snake_case to camelCase
-          const formattedFleets = fleetsRes.data.map(v => ({
-            ...v,
-            localLong: v.local_long || v.localLong,
-            localKmShort: v.local_km_short || v.localKmShort,
-            localKmLong: v.local_km_long || v.localKmLong,
-            extraHr: v.extra_hr || v.extraHr,
-          }));
-          setFleets(formattedFleets);
-        }
-
-        if (toursRes?.success && toursRes.data?.length > 0) {
-          // Format tours as [title, duration, route, price, image, id, prices]
-          const formattedTours = toursRes.data.map(t => [
-            t.title,
-            t.duration,
-            t.route,
-            t.price,
-            t.image,
-            t.id,
-            t.prices || []
-          ]);
-          setTours(formattedTours);
-        }
-
-        if (destsRes?.success && destsRes.data?.length > 0) {
-          // Format destinations as [slug, name, desc, image, price]
-          const formattedDests = destsRes.data.map(d => [
-            d.slug,
-            d.name,
-            d.desc,
-            d.image,
-            d.price
-          ]);
-          setDestinations(formattedDests);
-        }
-
-        if (blogsRes?.success && blogsRes.data?.length > 0) {
-          const formattedBlogs = blogsRes.data.map(b => ({
-            ...b,
-            readTime: b.read_time || b.readTime,
-            fullContent: b.full_content || b.fullContent,
-            quickFacts: b.quick_facts || b.quickFacts,
-          }));
-          setBlogs(formattedBlogs);
-        }
-
-        if (queriesRes?.success && queriesRes.data) {
-          setQueries(queriesRes.data);
-        }
-
-        if (paymentsRes?.success && paymentsRes.data) {
-          const formattedPayments = paymentsRes.data.map(p => ({
-            ...p,
-            easebuzzId: p.easebuzz_id || p.easebuzzId || 'EZB_PENDING',
-            date: p.created_at ? new Date(p.created_at).toLocaleString('en-IN', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true
-            }) : (p.date || '—'),
-            status: (p.status || 'INITIATED').toUpperCase(),
-          }));
-          setPayments(formattedPayments);
-        }
-      } catch (err) {
-        console.error('Failed fetching data from Neon DB:', err);
-      } finally {
-        if (isMounted) setIsLoading(false);
+      if (fleetsRes?.success && fleetsRes.data?.length > 0) {
+        const formattedFleets = fleetsRes.data.map(v => ({
+          ...v,
+          localLong: v.local_long || v.localLong,
+          localKmShort: v.local_km_short || v.localKmShort,
+          localKmLong: v.local_km_long || v.localKmLong,
+          extraHr: v.extra_hr || v.extraHr,
+        }));
+        setFleets(formattedFleets);
       }
-    }
 
+      if (toursRes?.success && toursRes.data?.length > 0) {
+        const formattedTours = toursRes.data.map(t => [
+          t.title,
+          t.duration,
+          t.route,
+          t.price,
+          t.image,
+          t.id,
+          t.prices || []
+        ]);
+        setTours(formattedTours);
+      }
+
+      if (destsRes?.success && destsRes.data?.length > 0) {
+        const formattedDests = destsRes.data.map(d => [
+          d.slug,
+          d.name,
+          d.desc,
+          d.image,
+          d.price
+        ]);
+        setDestinations(formattedDests);
+      }
+
+      if (blogsRes?.success && blogsRes.data?.length > 0) {
+        const formattedBlogs = blogsRes.data.map(b => ({
+          ...b,
+          readTime: b.read_time || b.readTime,
+          fullContent: b.full_content || b.fullContent,
+          quickFacts: b.quick_facts || b.quickFacts,
+        }));
+        setBlogs(formattedBlogs);
+      }
+
+      if (queriesRes?.success && queriesRes.data) {
+        setQueries(queriesRes.data);
+      }
+
+      if (paymentsRes?.success && paymentsRes.data) {
+        const formattedPayments = paymentsRes.data.map(p => ({
+          ...p,
+          easebuzzId: p.easebuzz_id || p.easebuzzId || 'EZB_PENDING',
+          date: p.created_at ? new Date(p.created_at).toLocaleString('en-IN', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+          }) : (p.date || '—'),
+          status: (p.status || 'INITIATED').toUpperCase(),
+        }));
+        setPayments(formattedPayments);
+      }
+    } catch (err) {
+      console.error('Failed fetching data from Neon DB:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadNeonData();
-    return () => { isMounted = false; };
   }, []);
 
   // --- Fleet CRUD (Neon DB) ---
@@ -128,7 +121,7 @@ export function DataProvider({ children }) {
         body: JSON.stringify(vehicle),
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.data) {
         const v = data.data;
         const normalized = {
           ...v,
@@ -137,24 +130,39 @@ export function DataProvider({ children }) {
           localKmLong: v.local_km_long || v.localKmLong,
           extraHr: v.extra_hr || v.extraHr,
         };
-        setFleets(prev => [normalized, ...prev]);
+        setFleets(prev => [normalized, ...prev.filter(item => item.id !== normalized.id)]);
         return normalized;
       }
     } catch (e) {
-      console.error(e);
+      console.error('Failed to add vehicle to DB:', e);
     }
   };
 
   const updateVehicle = async (id, updatedVehicle) => {
     try {
+      // Optimistic update
       setFleets(prev => prev.map(v => (v.id === id ? { ...v, ...updatedVehicle } : v)));
-      await fetch(`${API_BASE}/content/fleets/${id}`, {
+
+      const res = await fetch(`${API_BASE}/content/fleets/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedVehicle),
       });
+      const data = await res.json();
+      if (data.success && data.data) {
+        const v = data.data;
+        const normalized = {
+          ...v,
+          localLong: v.local_long || v.localLong,
+          localKmShort: v.local_km_short || v.localKmShort,
+          localKmLong: v.local_km_long || v.localKmLong,
+          extraHr: v.extra_hr || v.extraHr,
+        };
+        setFleets(prev => prev.map(item => (item.id === id ? normalized : item)));
+        return normalized;
+      }
     } catch (e) {
-      console.error(e);
+      console.error('Failed to update vehicle in DB:', e);
     }
   };
 
@@ -209,11 +217,18 @@ export function DataProvider({ children }) {
         prices: updatedTour[6] || targetTour[6] || []
       } : updatedTour;
 
-      await fetch(`${API_BASE}/content/tours/${tourId}`, {
+      const res = await fetch(`${API_BASE}/content/tours/${tourId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(tourObj),
       });
+      const data = await res.json();
+      if (data.success && data.data) {
+        const t = data.data;
+        const normalized = [t.title, t.duration, t.route, t.price, t.image, t.id, t.prices || []];
+        setTours(prev => prev.map((item, idx) => (idx === index ? normalized : item)));
+        return normalized;
+      }
     } catch (e) {
       console.error(e);
     }
@@ -247,7 +262,7 @@ export function DataProvider({ children }) {
         body: JSON.stringify(destObj),
       });
       const data = await res.json();
-      if (data.success) {
+      if (data.success && data.data) {
         const d = data.data;
         setDestinations(prev => [[d.slug, d.name, d.desc, d.image, d.price], ...prev]);
       }
@@ -266,11 +281,18 @@ export function DataProvider({ children }) {
         price: updatedDest[4]
       } : updatedDest;
 
-      await fetch(`${API_BASE}/content/destinations/${slug}`, {
+      const res = await fetch(`${API_BASE}/content/destinations/${slug}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(destObj),
       });
+      const data = await res.json();
+      if (data.success && data.data) {
+        const d = data.data;
+        const normalized = [d.slug, d.name, d.desc, d.image, d.price];
+        setDestinations(prev => prev.map(item => (item[0] === slug ? normalized : item)));
+        return normalized;
+      }
     } catch (e) {
       console.error(e);
     }

@@ -170,20 +170,28 @@ export default function Fleet() {
       image={images.hero}
     >
       <section className="content" id="rentals">
-        <div className="fleet-pricing-strip">
-          <div>
-            <span>LOCAL • 8 HOURS / 80 KM</span>
-            <strong>From ₹2,880</strong>
-          </div>
-          <div>
-            <span>LOCAL • 12 HOURS / 150 KM</span>
-            <strong>From ₹3,650</strong>
-          </div>
-          <div>
-            <span>OUTSTATION</span>
-            <strong>From ₹15/km • 300 km/day min</strong>
-          </div>
-        </div>
+        {(() => {
+          const startingLocal = fleets.find(f => f.local)?.local?.split('/')[0]?.trim() || '₹2,880';
+          const startingLocalLong = fleets.find(f => f.localLong)?.localLong?.split('/')[0]?.trim() || '₹3,650';
+          const startingOutstation = fleets.find(f => f.outstation)?.outstation || '₹15/km';
+
+          return (
+            <div className="fleet-pricing-strip">
+              <div>
+                <span>LOCAL • 8 HOURS / 80 KM</span>
+                <strong>From {startingLocal}</strong>
+              </div>
+              <div>
+                <span>LOCAL • 12 HOURS / 150 KM</span>
+                <strong>From {startingLocalLong}</strong>
+              </div>
+              <div>
+                <span>OUTSTATION</span>
+                <strong>From {startingOutstation} • 300 km/day min</strong>
+              </div>
+            </div>
+          );
+        })()}
 
         {(() => {
           // Define category definitions with matching criteria
