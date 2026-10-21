@@ -11,7 +11,7 @@ import {
   FaChevronRight, FaCar, FaBus, FaPhone, FaWhatsapp, FaChevronDown,
   FaCircleCheck, FaRoute, FaLandmark, FaPlane, FaWandMagicSparkles
 } from 'react-icons/fa6';
-import { destinations, images, services, tours, vehicles, whatsapp, phone } from '../data/siteData';
+import { destinations, images, services, tours, vehicles, whatsapp, whatsappChat, whatsappBooking, phone } from '../data/siteData';
 import { fleet } from '../data/fleetData';
 import { cabRoutes } from '../data/cabRoutes';
 import { useData } from '../context/DataContext';
@@ -294,7 +294,7 @@ export default function Home() {
                 >
                   Book Cab 💳
                 </button>
-                <a className="hero-card-btn hero-btn-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">
+                <a className="hero-card-btn hero-btn-whatsapp" href={whatsappBooking('Hi! I\'d like to enquire about a cab or tour package from Tirupati. Could you please share availability and pricing?')} target="_blank" rel="noreferrer">
                   <FaWhatsapp size={14} /> Enquiry on WhatsApp
                 </a>
                 <Link className="hero-card-btn hero-btn-packages" to="/tours">
@@ -645,7 +645,7 @@ export default function Home() {
             Planning your <em>Tirupati journey?</em>
           </h2>
           <p>Share your route and group size on WhatsApp. We will help you select the ideal vehicle and fare.</p>
-          <a href={whatsapp} target="_blank" rel="noreferrer" className="button">
+          <a href={whatsappChat('Home Page – Planning a Tirupati journey')} target="_blank" rel="noreferrer" className="button">
             Chat on WhatsApp <FaArrowRight size={14} />
           </a>
         </div>

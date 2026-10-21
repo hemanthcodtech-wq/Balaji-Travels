@@ -236,8 +236,7 @@ body:has(.itinerary-overlay),
 body:has(.admin-modal-overlay) {
   overflow: hidden !important;
   height: 100vh !important;
-  touch-action: none !important;
-  overscroll-behavior: none !important;
 }
+
 
 

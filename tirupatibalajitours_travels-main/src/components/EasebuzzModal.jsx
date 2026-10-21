@@ -167,8 +167,20 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
   const [step, setStep] = useState(1);
 
   // Identify booking context type: 'tour' | 'vehicle' | 'route' | 'general'
-  const serviceName = initialData.service || initialData.slug || initialData.name || initialData.title || '';
-  const matchedPkg = packageDetails[serviceName] || packageDetails[initialData.name];
+  const rawServiceName = initialData.service || initialData.tourName || initialData.slug || initialData.name || initialData.title || '';
+  // Clean service name if it has parenthetical vehicle info like "Tour Name (Ertiga (6 Seater))"
+  const cleanServiceName = rawServiceName.replace(/\s*\([^)]+(\([^)]*\))?[^)]*\)$/, '').trim();
+  const serviceName = cleanServiceName || rawServiceName;
+
+  const matchedPkg = packageDetails[serviceName] || 
+    packageDetails[rawServiceName] || 
+    packageDetails[initialData.name] ||
+    Object.entries(packageDetails).find(([key]) => {
+      const kLower = key.toLowerCase();
+      const sLower = serviceName.toLowerCase();
+      return kLower === sLower || (sLower.length > 5 && (sLower.includes(kLower) || kLower.includes(sLower)));
+    })?.[1];
+
   const matchedRoute = cabRoutes.find(r => {
     if (!serviceName) return false;
     const sLower = serviceName.toLowerCase();
@@ -178,11 +190,14 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
     return sLower.includes(rTitle) || rTitle.includes(sLower) || sLower.includes(rShort) || rShort.includes(sLower) || sLower.includes(rSlug.replace(/-distance$/, ''));
   });
 
-  const tourPrices = initialData.prices || matchedRoute?.prices || matchedPkg?.prices || [];
-  const durationText = initialData.duration || (serviceName.includes('Days') || serviceName.includes('Day') ? serviceName.match(/\d+\s*Days?/i)?.[0] : null);
-  const routeText = initialData.route || initialData.routeCorridor;
+  const durationText = initialData.duration || matchedPkg?.duration || (serviceName.includes('Days') || serviceName.includes('Day') ? serviceName.match(/\d+\s*Days?/i)?.[0] : null);
+  const routeText = initialData.route || initialData.routeCorridor || matchedPkg?.route;
 
-  const isTourBooking = initialData.type === 'tour' || (tourPrices.length > 0 && !initialData.local && !initialData.outstation);
+  const isNavbarBooking = initialData.isNavbarBooking === true;
+  const sLowerCheck = (initialData.slug || initialData.pageSlug || serviceName || initialData.service || '').toLowerCase();
+  const isCustomPackages = sLowerCheck.includes('customized-packages') || sLowerCheck.includes('customized packages') || sLowerCheck.includes('custom quote') || sLowerCheck.includes('custom package');
+
+  const isTourBooking = initialData.type === 'tour' || (Boolean(initialData.prices && initialData.prices.length > 0) && !initialData.local && !initialData.outstation);
   const isVehicleBooking = initialData.type === 'vehicle' || Boolean(initialData.local || initialData.outstation || initialData.localLong);
   const isRouteBooking = initialData.type === 'route' || Boolean(initialData.routeName || (initialData.from && initialData.to));
 
@@ -192,11 +207,6 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
     isRouteBooking ? 'route' :
     'general'
   );
-
-  const isNavbarBooking = initialData.isNavbarBooking === true;
-
-  const sLowerCheck = (initialData.slug || initialData.pageSlug || serviceName || initialData.service || '').toLowerCase();
-  const isCustomPackages = sLowerCheck.includes('customized-packages') || sLowerCheck.includes('customized packages') || sLowerCheck.includes('custom quote') || sLowerCheck.includes('custom package');
 
   const isFixedRouteOrTour = !isNavbarBooking && !isCustomPackages && (
     bookingType === 'route' || 
@@ -220,6 +230,52 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
     sLowerCheck.includes('talakona') ||
     sLowerCheck.includes('mahabalipuram')
   );
+
+  // Calculate tourPrices: use passed prices, matched route prices, matched pkg prices, or generate from starting price if it's a tour/route
+  let rawPrices = initialData.prices || matchedRoute?.prices || matchedPkg?.prices || [];
+  const baseStartingNum = parseInt((initialData.fullAmount || initialData.price || matchedRoute?.starting || '2880').toString().replace(/[^0-9]/g, ''), 10) || 2880;
+  const activeFleetsList = (fleets && fleets.length > 0) ? fleets : null;
+
+  let tourPrices = [];
+  if (activeFleetsList && (isFixedRouteOrTour || isTourBooking || isRouteBooking || rawPrices.length > 0 || initialData.type === 'route' || initialData.type === 'tour')) {
+    // Generate/map prices across ALL active fleet vehicles
+    tourPrices = activeFleetsList.map(v => {
+      const vName = v.name || v.id;
+      const vLower = vName.toLowerCase();
+
+      // Check if price already exists in rawPrices
+      const foundMatch = rawPrices.find(([pName]) => {
+        const pLower = pName.toLowerCase();
+        return vLower.includes(pLower) || pLower.includes(vLower);
+      });
+
+      if (foundMatch) {
+        return [vName, foundMatch[1]];
+      }
+
+      let mult = 1.0;
+      if (vLower.includes('ertiga')) mult = 1.25;
+      else if (vLower.includes('crysta') || vLower.includes('innova')) mult = 1.55;
+      else if (vLower.includes('hycross')) mult = 1.9;
+      else if (vLower.includes('fortuner')) mult = 2.5;
+      else if (vLower.includes('urbania') && (vLower.includes('16') || vLower.includes('17'))) mult = 2.9;
+      else if (vLower.includes('urbania')) mult = 2.6;
+      else if (vLower.includes('tempo') && (vLower.includes('20') || vLower.includes('21'))) mult = 2.7;
+      else if (vLower.includes('tempo') && (vLower.includes('16') || vLower.includes('17'))) mult = 2.2;
+      else if (vLower.includes('tempo') || vLower.includes('12')) mult = 1.8;
+      else if (vLower.includes('27') || vLower.includes('mini bus')) mult = 3.4;
+      else if (vLower.includes('40')) mult = 4.2;
+      else if (vLower.includes('45')) mult = 4.8;
+      else if ((v.seats || 4) > 20) mult = 3.8;
+      else if ((v.seats || 4) > 10) mult = 2.2;
+      else if ((v.seats || 4) > 5) mult = 1.4;
+
+      const calc = Math.round((baseStartingNum * mult) / 50) * 50;
+      return [vName, `₹${calc.toLocaleString('en-IN')}`];
+    });
+  } else {
+    tourPrices = rawPrices;
+  }
 
   const [selectedRateKey, setSelectedRateKey] = useState('local');
 
@@ -679,7 +735,7 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
                     <input 
                       type="text" 
                       required 
-                      placeholder="e.g. Ramesh Kumar"
+                      placeholder="e.g. Hemanth Kancharla"
                       value={formData.firstname}
                       onChange={e => setFormData({ ...formData, firstname: e.target.value })}
                       style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 10, border: '1px solid #cbd5e1', fontSize: '0.95rem' }}

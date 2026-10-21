@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { 
   Calendar, Clock, MapPin, CheckCircle2, XCircle, Car, Phone, 
   MessageCircle, Sparkles, ShieldCheck, ArrowRight, ChevronRight, 
-  CreditCard, Navigation, ChevronDown, Award, Users, Compass
+  CreditCard, Navigation, ChevronDown, Award, Users, Compass,
+  Wind, Luggage, Fuel, Check
 } from 'lucide-react';
 import { destinations, phone, whatsapp } from '../data/siteData';
 import { getVehicleInfo } from '../data/packageData';
@@ -202,48 +203,77 @@ export default function DestinationDetail() {
           <div className="vehicle-tariff-grid">
             {vehicleRates.map(({ name: vehicle, price }, i) => {
               const vInfo = getVehicleInfo(vehicle, fleets);
+              const waMessage = `Hi, I want to book ${vehicle} for ${destName} Tour at ${price}. Please confirm availability.`;
+              const featuresList = Array.isArray(vInfo.features) ? vInfo.features : (vInfo.features ? [vInfo.features] : ['AC', 'Music', 'USB']);
+
               return (
-                <motion.div 
-                  className="tariff-card"
+                <motion.article 
+                  className="tariff-card tour-fleet-style-card"
                   key={vehicle}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: i * 0.05 }}
+                  transition={{ duration: 0.3, delay: i * 0.04 }}
                 >
-                  <div className="tariff-card-media">
-                    <img src={vInfo.image} alt={vehicle} loading="lazy" />
-                    <span className="vehicle-cat-badge">{vInfo.category || 'AC CAB'}</span>
-                    <span className="vehicle-seat-badge"><Users size={12}/> {vInfo.seats}</span>
+                  <div className="tour-vehicle-media">
+                    <img src={vInfo.image} alt={`${vehicle} for ${destName}`} loading="lazy" />
+                    <span className="tour-media-type">{vInfo.category || 'AC CAB'}</span>
+                    <div className="tour-media-bottom">
+                      <span className="tour-media-rate">{price}</span>
+                      <span className="tour-media-seats"><Users size={13} /> {vInfo.seats || '4+1'}</span>
+                    </div>
                   </div>
-                  <div className="tariff-card-header">
-                    <h3>{vehicle}</h3>
-                  </div>
-                  <div className="tariff-card-body">
-                    <div className="tariff-price">
-                      <span className="price-val">{price}</span>
-                      <span className="price-label">Indicative Tour Fare</span>
+
+                  <div className="tour-vehicle-info">
+                    <div className="tour-vehicle-heading">
+                      <div>
+                        <span className="tour-vehicle-subcat">{vInfo.category || 'CAB SERVICE'}</span>
+                        <h3>{vehicle}</h3>
+                      </div>
+                      <span className="tour-vehicle-capacity">{vInfo.seats ? `${vInfo.seats} seats` : 'AC CAB'}</span>
                     </div>
 
-                    <div className="tariff-card-actions">
+                    {vInfo.use && (
+                      <p className="tour-vehicle-summary">{vInfo.use}</p>
+                    )}
+
+                    <div className="tour-vehicle-features">
+                      {featuresList.map(feature => (
+                        <span key={feature}><Wind size={12} /> {feature}</span>
+                      ))}
+                      {vInfo.bags && <span><Luggage size={12} /> {vInfo.bags} bags</span>}
+                      {vInfo.fuel && <span><Fuel size={12} /> {vInfo.fuel}</span>}
+                    </div>
+
+                    <div className="tour-vehicle-rate-pill">
+                      <div className="rate-pill-left">
+                        <small>Indicative Tour Fare</small>
+                        <strong>{price}</strong>
+                      </div>
+                      <div className="rate-pill-badge">
+                        <Check size={13} /> Tolls & Driver Incl.
+                      </div>
+                    </div>
+
+                    <div className="tour-vehicle-actions">
                       <button 
                         type="button" 
-                        className="tariff-book-btn"
+                        className="tour-btn-book"
                         onClick={() => handleBookDestination(`${destName} (${vehicle})`, price, vehicle)}
                       >
                         Book ₹1,000 Token 💳
                       </button>
                       <a 
-                        href={`${whatsapp}?text=${encodeURIComponent(`Hi, I want to book ${vehicle} for ${destName} Tour at ${price}.`)}`}
+                        href={`${whatsapp}?text=${encodeURIComponent(waMessage)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="tariff-wa-btn"
+                        className="tour-btn-wa"
                       >
                         <MessageCircle size={15}/> WhatsApp
                       </a>
                     </div>
                   </div>
-                </motion.div>
+                </motion.article>
               );
             })}
           </div>

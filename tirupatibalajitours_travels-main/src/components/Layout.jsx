@@ -9,7 +9,7 @@ import {
   FaFacebookF, FaXTwitter, FaInstagram, FaYoutube,
   FaLinkedinIn, FaWhatsapp
 } from 'react-icons/fa6';
-import { phone, whatsapp, email } from '../data/siteData';
+import { phone, whatsapp, whatsappChat, email } from '../data/siteData';
 import { cabRoutes } from '../data/cabRoutes';
 import { serviceLinks, taxiLinks } from '../data/servicePages';
 import { blogPosts } from '../data/blogData';
@@ -143,7 +143,7 @@ function HeaderDropdown({ id, activeDropdown, onEnter, onLeave, label, to, links
 }
 
 export default function Layout() {
-  const { fleets, blogs } = useData();
+  const { fleets, tours: adminTours, blogs } = useData();
   const blogList = blogs && blogs.length > 0 ? blogs : blogPosts;
 
   // Generate dynamic fleet links from database/context fleets
@@ -160,6 +160,25 @@ export default function Layout() {
     };
   });
 
+  // Generate dynamic tours/packages links from admin DataContext
+  const dynamicTourLinks = (adminTours && adminTours.length > 0)
+    ? adminTours.map(t => {
+        // [title, duration, route, startingPrice, image, id, prices]
+        const title = t[0] || 'Tour Package';
+        const price = t[3] || '₹3,500';
+        const rawSlug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        return {
+          path: `/tour/${rawSlug}`,
+          title: title,
+          starting: `From ${price}`
+        };
+      })
+    : packageNavLinks.map(p => ({
+        path: `/services/${p.slug}`,
+        title: p.title,
+        starting: p.starting
+      }));
+
   const [open, setOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [activeTab, setActiveTab] = useState('cabs');
@@ -167,6 +186,17 @@ export default function Layout() {
   const [headerPayModalOpen, setHeaderPayModalOpen] = useState(false);
   const timerRef = useRef(null);
   const location = useLocation();
+
+  const pageLabel = (() => {
+    const p = location.pathname;
+    if (p === '/') return 'Home Page';
+    if (p.startsWith('/tirupati-cabs/')) return `Cab Route: ${p.split('/tirupati-cabs/')[1].replace(/-/g, ' ')}`;
+    if (p.startsWith('/tour/')) return `Tour Package: ${p.split('/tour/')[1].replace(/-/g, ' ')}`;
+    if (p.startsWith('/fleet/')) return `Fleet Vehicle: ${p.split('/fleet/')[1].replace(/-/g, ' ')}`;
+    if (p.startsWith('/destinations/')) return `Destination: ${p.split('/destinations/')[1].replace(/-/g, ' ')}`;
+    if (p.startsWith('/services/')) return `Service: ${p.split('/services/')[1].replace(/-/g, ' ')}`;
+    return p.replace(/^\//, '').replace(/-/g, ' ') || 'Website';
+  })();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -179,7 +209,7 @@ export default function Layout() {
   }, []);
 
   useEffect(() => {
-    if (open || headerPayModalOpen) {
+    if (headerPayModalOpen) {
       const prevOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
       document.body.classList.add('modal-open');
@@ -188,7 +218,7 @@ export default function Layout() {
         document.body.classList.remove('modal-open');
       };
     }
-  }, [open, headerPayModalOpen]);
+  }, [headerPayModalOpen]);
 
   const handleDropdownEnter = id => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -255,8 +285,18 @@ export default function Layout() {
                 viewAllLink="/cabs"
                 viewAllText="View All Cabs"
               />
-              <HeaderDropdown id="taxi" activeDropdown={activeDropdown} onEnter={handleDropdownEnter} onLeave={handleDropdownLeave} label="Taxi in Tirupati" to="/cabs" className="nav-taxi" links={taxiLinks} getSlug={r => `/${r.slug}`} />
-              <HeaderDropdown id="services" activeDropdown={activeDropdown} onEnter={handleDropdownEnter} onLeave={handleDropdownLeave} label="Services" to="/services" className="nav-services" links={packageNavLinks} getSlug={p => `/services/${p.slug}`} />
+              <HeaderDropdown 
+                id="tours" 
+                activeDropdown={activeDropdown} 
+                onEnter={handleDropdownEnter} 
+                onLeave={handleDropdownLeave} 
+                label="Tours & Packages" 
+                to="/tours" 
+                className="nav-tours" 
+                links={dynamicTourLinks} 
+                viewAllLink="/tours"
+                viewAllText="View All Tour Packages"
+              />
               <HeaderDropdown 
                 id="fleet" 
                 activeDropdown={activeDropdown} 
@@ -269,10 +309,33 @@ export default function Layout() {
                 viewAllLink="/fleet"
                 viewAllText="View All Fleet"
               />
-              <NavLink to="/tours" onMouseEnter={() => handleDropdownLeave(true)}>Tours</NavLink>
+              <HeaderDropdown 
+                id="services" 
+                activeDropdown={activeDropdown} 
+                onEnter={handleDropdownEnter} 
+                onLeave={handleDropdownLeave} 
+                label="Services" 
+                to="/services" 
+                className="nav-services" 
+                links={packageNavLinks} 
+                getSlug={p => `/services/${p.slug}`} 
+                viewAllLink="/services"
+                viewAllText="View All Services"
+              />
               <NavLink to="/destinations" onMouseEnter={() => handleDropdownLeave(true)}>Destinations</NavLink>
               <NavLink to="/blog" onMouseEnter={() => handleDropdownLeave(true)}>Blog</NavLink>
-              <HeaderDropdown id="more" activeDropdown={activeDropdown} onEnter={handleDropdownEnter} onLeave={handleDropdownLeave} label="More" isMore className="nav-more" links={moreNavLinks} />
+              <HeaderDropdown 
+                id="more" 
+                activeDropdown={activeDropdown} 
+                onEnter={handleDropdownEnter} 
+                onLeave={handleDropdownLeave} 
+                label="More" 
+                isMore 
+                className="nav-more" 
+                links={moreNavLinks} 
+                viewAllLink="/contact-us"
+                viewAllText="Contact Us & Info"
+              />
             </div>
           </nav>
           <div className="nav-right-controls" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -299,7 +362,7 @@ export default function Layout() {
             >
               <CreditCard size={14} /> Book Cab 💳
             </button>
-            <a className="nav-wa" href={whatsapp} target="_blank" rel="noreferrer">
+            <a className="nav-wa" href={whatsappChat(pageLabel)} target="_blank" rel="noreferrer">
               <MessageCircle size={16} /> WhatsApp
             </a>
             <button
@@ -318,14 +381,21 @@ export default function Layout() {
       <AnimatePresence>
         {open && (
           <>
-            <motion.div className="overlay" onClick={() => setOpen(false)} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
+            <motion.div 
+              className="overlay" 
+              onClick={() => setOpen(false)} 
+              onTouchMove={(e) => e.preventDefault()}
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+            />
             <motion.aside
               className="drawer executive-mobile-drawer"
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            >
+              initial={{ right: '-100%' }}
+              animate={{ right: 0 }}
+              exit={{ right: '-100%' }}
+              transition={{ type: 'tween', duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] }}
+              style={{ right: 0 }}>
               <div className="drawer-header-row">
                 <Brand header />
                 <div className="drawer-header-actions">
@@ -350,12 +420,12 @@ export default function Layout() {
                 </button>
               </div>
 
-              <div className="drawer-scroll-content">
+              <div className="drawer-scroll-content" onTouchMove={(e) => e.stopPropagation()}>
                 {activeTab === 'cabs' && (
                   <div className="drawer-section-block">
                     <span className="drawer-badge-pill">Popular Cab Routes</span>
                     <div className="drawer-link-card-grid">
-                      {cabRoutes.map(r => (
+                      {cabRoutes.slice(0, 7).map(r => (
                         <NavLink key={r.slug} onClick={() => setOpen(false)} to={`/tirupati-cabs/${r.slug}`} className="mob-link-card">
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
                             <span>{r.shortTitle || r.title}</span>
@@ -364,6 +434,18 @@ export default function Layout() {
                           <ChevronRight size={14} />
                         </NavLink>
                       ))}
+
+                      <NavLink 
+                        onClick={() => setOpen(false)} 
+                        to="/tirupati-cabs/tirupati-to-srikalahasti-distance" 
+                        className="mob-link-card mob-view-all-card"
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
+                          <span style={{ color: '#38bdf8', fontWeight: 800 }}>✨ View All Cab Routes</span>
+                          <small style={{ color: '#93c5fd', fontSize: '11px' }}>Explore all 13+ outstation & local temple routes</small>
+                        </div>
+                        <ChevronRight size={16} color="#38bdf8" />
+                      </NavLink>
                     </div>
                   </div>
                 )}
@@ -372,7 +454,7 @@ export default function Layout() {
                   <div className="drawer-section-block">
                     <span className="drawer-badge-pill">Vehicle Fleet & Rates</span>
                     <div className="drawer-link-card-grid">
-                      {dynamicFleetNavLinks.map(f => (
+                      {dynamicFleetNavLinks.slice(0, 7).map(f => (
                         <NavLink key={f.path} onClick={() => setOpen(false)} to={f.path} className="mob-link-card">
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
                             <span>{f.title}</span>
@@ -381,6 +463,18 @@ export default function Layout() {
                           <ChevronRight size={14} />
                         </NavLink>
                       ))}
+
+                      <NavLink 
+                        onClick={() => setOpen(false)} 
+                        to="/fleet" 
+                        className="mob-link-card mob-view-all-card"
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
+                          <span style={{ color: '#38bdf8', fontWeight: 800 }}>✨ View All Fleet & Buses</span>
+                          <small style={{ color: '#93c5fd', fontSize: '11px' }}>See all 13+ Sedans, Urbania, Tempos & Buses</small>
+                        </div>
+                        <ChevronRight size={16} color="#38bdf8" />
+                      </NavLink>
                     </div>
                   </div>
                 )}
@@ -389,15 +483,27 @@ export default function Layout() {
                   <div className="drawer-section-block">
                     <span className="drawer-badge-pill">Taxi & Tour Packages</span>
                     <div className="drawer-link-card-grid">
-                      {packageNavLinks.map(p => (
-                        <NavLink key={p.slug} onClick={() => setOpen(false)} to={`/services/${p.slug}`} className="mob-link-card">
+                      {dynamicTourLinks.slice(0, 7).map(p => (
+                        <NavLink key={p.path} onClick={() => setOpen(false)} to={p.path} className="mob-link-card">
                           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
                             <span>{p.title}</span>
-                            {p.starting && <small style={{ color: '#0284c7', fontWeight: 700, fontSize: '11px' }}>Starting from {p.starting}</small>}
+                            {p.starting && <small style={{ color: '#0284c7', fontWeight: 700, fontSize: '11px' }}>Starting {p.starting}</small>}
                           </div>
                           <ChevronRight size={14} />
                         </NavLink>
                       ))}
+
+                      <NavLink 
+                        onClick={() => setOpen(false)} 
+                        to="/tours" 
+                        className="mob-link-card mob-view-all-card"
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
+                          <span style={{ color: '#38bdf8', fontWeight: 800 }}>✨ View All Tour Packages</span>
+                          <small style={{ color: '#93c5fd', fontSize: '11px' }}>Explore all 13+ temple & holiday packages</small>
+                        </div>
+                        <ChevronRight size={16} color="#38bdf8" />
+                      </NavLink>
                     </div>
                   </div>
                 )}
@@ -409,11 +515,23 @@ export default function Layout() {
                       <NavLink onClick={() => setOpen(false)} to="/blog" className="mob-link-card">
                         <span>📰 Travel Blogs & Guides</span><ChevronRight size={14} />
                       </NavLink>
-                      {moreNavLinks.map(m => (
+                      {moreNavLinks.slice(0, 6).map(m => (
                         <NavLink key={m.path} onClick={() => setOpen(false)} to={m.path} className="mob-link-card">
                           <span>{m.title}</span><ChevronRight size={14} />
                         </NavLink>
                       ))}
+
+                      <NavLink 
+                        onClick={() => setOpen(false)} 
+                        to="/contact-us" 
+                        className="mob-link-card mob-view-all-card"
+                      >
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
+                          <span style={{ color: '#38bdf8', fontWeight: 800 }}>✨ View Contact & Support</span>
+                          <small style={{ color: '#93c5fd', fontSize: '11px' }}>Get in touch with 24/7 Tirupati travel desk</small>
+                        </div>
+                        <ChevronRight size={16} color="#38bdf8" />
+                      </NavLink>
                     </div>
                   </div>
                 )}
@@ -500,7 +618,7 @@ export default function Layout() {
 
       <div className="floating-whatsapp-container">
         <div className="whatsapp-tooltip"><span className="online-dot" /> Need a Cab? <strong>Chat Now!</strong></div>
-        <a className="whatsapp-pulse-btn" href={whatsapp} target="_blank" rel="noreferrer" title="Chat on WhatsApp">
+        <a className="whatsapp-pulse-btn" href={whatsappChat(pageLabel)} target="_blank" rel="noreferrer" title="Chat on WhatsApp">
           <span className="pulse-ring" /><span className="pulse-ring-outer" /><FaWhatsapp size={26} />
         </a>
       </div>

@@ -277,213 +277,274 @@
 
 .vehicle-tariff-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
-.tariff-card {
-  background: #ffffff;
+/* Tour Fleet Style Card */
+.tour-fleet-style-card {
+  min-width: 0;
   border: 1px solid #e2e8f0;
-  border-radius: 14px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  background: #ffffff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
-.tariff-card:hover {
+.tour-fleet-style-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.1);
-  border-color: #0284c7;
+  box-shadow: 0 14px 28px rgba(2, 132, 199, 0.12);
+  border-color: #38bdf8;
 }
 
-.tariff-card-header {
-  background: #f1f5f9;
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  border-bottom: 1px solid #e2e8f0;
-  color: #0284c7;
-}
-
-.tariff-card-header h3 {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
-
-.tariff-card-body {
-  padding: 1rem 1.15rem 1.15rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.tariff-price {
-  margin-bottom: 0.75rem;
-}
-
-.price-val {
-  font-size: 1.45rem;
-  font-weight: 800;
-  color: #0284c7;
-  display: block;
-}
-
-.price-label {
-  font-size: 0.78rem;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.tariff-features {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.5rem 0;
-}
-
-.tariff-features li {
-  font-size: 0.875rem;
-  color: #475569;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.6rem;
-}
-
-.icon-check {
-  color: #10b981;
-  flex-shrink: 0;
-}
-
-.tariff-card-media {
+.tour-vehicle-media {
+  height: 200px;
   position: relative;
-  height: 135px;
-  background: #f8fafc;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f1f5f9 0%, #e2e8f0 100%);
   border-bottom: 1px solid #e2e8f0;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  padding: 0.5rem;
 }
 
-.tariff-card-media img {
-  max-height: 110px;
-  max-width: 90%;
-  object-fit: contain;
-  transition: transform 0.3s ease;
+.tour-vehicle-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s ease;
 }
 
-.tariff-card:hover .tariff-card-media img {
+.tour-fleet-style-card:hover .tour-vehicle-media img {
   transform: scale(1.05);
 }
 
-.vehicle-cat-badge {
+.tour-media-type {
   position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  background: rgba(15, 23, 42, 0.85);
-  color: #38bdf8;
-  font-size: 0.7rem;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
+  color: #0284c7;
+  border: 1px solid rgba(2, 132, 199, 0.2);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 0.72rem;
   font-weight: 800;
-  padding: 0.2rem 0.55rem;
-  border-radius: 4px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
 }
 
-.vehicle-seat-badge {
+.tour-media-bottom {
   position: absolute;
-  bottom: 0.75rem;
-  right: 0.75rem;
-  background: rgba(2, 132, 199, 0.9);
-  color: #ffffff;
-  font-size: 0.75rem;
-  font-weight: 700;
-  padding: 0.25rem 0.6rem;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.vehicle-rate-sheet-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 0.85rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.rate-row {
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.8rem;
-  color: #64748b;
 }
 
-.rate-row strong {
-  color: #1e293b;
-  font-weight: 700;
-}
-
-.rate-row.highlight-rate {
-  border-top: 1px dashed #cbd5e1;
-  padding-top: 0.35rem;
-  margin-top: 0.2rem;
-  color: #0369a1;
-}
-
-.rate-row.highlight-rate strong {
-  color: #0284c7;
+.tour-media-rate {
+  background: #0284c7;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 6px 11px;
   font-size: 0.85rem;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.35);
+  letter-spacing: -0.01em;
 }
 
-.tariff-card-actions {
+.tour-media-seats {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  color: #0f172a;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.tour-media-seats svg {
+  color: #0284c7;
+}
+
+.tour-vehicle-info {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.tour-vehicle-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.tour-vehicle-subcat {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  font-weight: 800;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tour-vehicle-heading h3 {
+  font-size: 1.15rem;
+  line-height: 1.25;
+  color: #0f172a;
+  margin: 0;
+  font-weight: 800;
+}
+
+.tour-vehicle-capacity {
+  white-space: nowrap;
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.tour-vehicle-summary {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #64748b;
+  margin: 0 0 0.85rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tour-vehicle-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 0.9rem;
+}
+
+.tour-vehicle-features span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #334155;
+  background: #f8fafc;
+}
+
+.tour-vehicle-features svg {
+  color: #0284c7;
+}
+
+.tour-vehicle-rate-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem;
+  margin-top: auto;
+  margin-bottom: 0.85rem;
+}
+
+.rate-pill-left small {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #0369a1;
+  letter-spacing: 0.04em;
+}
+
+.rate-pill-left strong {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #0284c7;
+}
+
+.rate-pill-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  border-radius: 6px;
+  padding: 4px 7px;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.tour-vehicle-actions {
   display: flex;
   gap: 0.5rem;
 }
 
-.tariff-book-btn {
-  flex: 1;
+.tour-btn-book {
+  flex: 1.2;
   background: linear-gradient(135deg, #0284c7, #0369a1);
   color: #ffffff;
   border: none;
-  padding: 0.65rem;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.825rem;
+  padding: 0.65rem 0.5rem;
+  border-radius: 9px;
+  font-weight: 800;
+  font-size: 0.82rem;
   cursor: pointer;
-  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
 }
 
-.tariff-book-btn:hover {
-  opacity: 0.95;
+.tour-btn-book:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
-.tariff-wa-btn {
+.tour-btn-wa {
+  flex: 0.9;
   background: #25d366;
   color: #ffffff;
   text-decoration: none;
-  padding: 0.65rem 0.85rem;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 0.825rem;
-  display: inline-flex;
+  padding: 0.65rem 0.5rem;
+  border-radius: 9px;
+  font-weight: 800;
+  font-size: 0.82rem;
+  display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 4px;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
-.tariff-wa-btn:hover {
+.tour-btn-wa:hover {
   background: #1fa855;
+  transform: translateY(-1px);
 }
 
 /* Main Grid: Itinerary + Sidebar */
@@ -826,14 +887,73 @@
 }
 
 @media (max-width: 640px) {
-  .vehicle-tariff-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .vehicle-tariff-grid,
+  .fleet-card-grid.enhanced-cab-fleet-grid,
+  .fleet-card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.15rem;
   }
   .inc-exc-box {
     grid-template-columns: 1fr;
   }
   .tour-hero-content h1 {
     font-size: 1.6rem;
+  }
+
+  /* Enhanced Mobile Card Display */
+  .tour-fleet-style-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+  .tour-vehicle-media {
+    height: 180px;
+  }
+  .tour-vehicle-info {
+    padding: 1.1rem;
+  }
+  .tour-vehicle-heading h3 {
+    font-size: 1.05rem;
+  }
+  .tour-vehicle-features {
+    gap: 5px;
+    margin-bottom: 0.8rem;
+  }
+  .tour-vehicle-features span {
+    padding: 3px 7px;
+    font-size: 0.7rem;
+  }
+  .tour-vehicle-rate-pill {
+    padding: 0.65rem 0.9rem;
+    margin-bottom: 0.85rem;
+  }
+  .rate-pill-left small {
+    font-size: 0.65rem;
+  }
+  .rate-pill-left strong {
+    font-size: 1.2rem;
+  }
+  .rate-pill-badge {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+  .tour-vehicle-actions {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  .tour-btn-book {
+    flex: 1.2;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.85rem;
+    min-height: 44px;
+    justify-content: center;
+  }
+  .tour-btn-wa {
+    flex: 0.9;
+    padding: 0.75rem 0.5rem;
+    font-size: 0.85rem;
+    min-height: 44px;
+    justify-content: center;
   }
 }

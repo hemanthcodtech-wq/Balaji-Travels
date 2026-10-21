@@ -153,7 +153,7 @@ export default function Contact() {
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="name">Your Name *</label>
-                    <input id="name" name="name" type="text" placeholder="e.g. Ramesh Kumar" required />
+                    <input id="name" name="name" type="text" placeholder="e.g. Hemanth Kancharla" required />
                   </div>
 
                   <div className="form-group">

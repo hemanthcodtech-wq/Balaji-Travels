@@ -230,7 +230,16 @@ export default function BookingForm({ showPackages = true }) {
       status: 'Pending'
     });
 
-    const message = `Hi, I would like to book a cab / tour package.\nBooked Item / Destination: ${f.to}\nFrom: ${f.from}\nDate: ${f.date || 'Not specified'}\nTrip type: ${f.trip}\nSelected Vehicle: ${f.vehicle}\nEstimated Fare: ${estimatedPrice}`;
+    const message = `🙏 *Cab / Tour Enquiry – Tirupati Balaji Tours & Travels*
+
+📍 *Pickup:* ${f.from}
+📍 *Drop / Destination:* ${f.to}
+📅 *Travel Date:* ${f.date || 'Not specified'}
+🔄 *Trip Type:* ${f.trip}
+🚗 *Vehicle:* ${selectedOpt?.vehicleObj?.name || selectedOpt?.key || f.vehicle.split('—')[0].trim()}
+💰 *Estimated Fare:* ${estimatedPrice}
+
+Please confirm availability and share the final quote. Thank you!`;
     window.open(whatsappBooking(message), '_blank', 'noopener,noreferrer');
   }
 

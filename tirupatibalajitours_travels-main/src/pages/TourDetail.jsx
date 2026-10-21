@@ -4,7 +4,8 @@ import { motion } from 'framer-motion';
 import { 
   Calendar, Clock, MapPin, CheckCircle2, XCircle, Car, Phone, 
   MessageCircle, Sparkles, ShieldCheck, ArrowRight, ChevronRight, 
-  CreditCard, Navigation, ChevronDown, Award, HelpCircle, Users
+  CreditCard, Navigation, ChevronDown, Award, HelpCircle, Users,
+  Luggage, Wind, Fuel, Check
 } from 'lucide-react';
 import { getTourBySlug, packagesData, getVehicleInfo } from '../data/packageData';
 import { useData } from '../context/DataContext';
@@ -19,6 +20,47 @@ export default function TourDetail() {
   const [payModalData, setPayModalData] = useState(null);
   const [activeFaq, setActiveFaq] = useState(null);
 
+  // Compute vehicle prices for this tour across active fleet
+  const activeFleets = (fleets && fleets.length > 0) ? fleets : null;
+  const baseNum = parseInt((tour?.startingPrice || '3500').replace(/[^0-9]/g, ''), 10) || 3500;
+
+  const computedPrices = activeFleets ? activeFleets.map(v => {
+    const vName = v.name || v.id;
+    const vLower = vName.toLowerCase();
+    
+    const foundPrice = tour?.prices?.find(([pName]) => {
+      const pLower = pName.toLowerCase();
+      return vLower.includes(pLower) || pLower.includes(vLower);
+    });
+
+    let priceStr = foundPrice ? foundPrice[1] : null;
+    if (!priceStr) {
+      let mult = 1.0;
+      if (vLower.includes('ertiga')) mult = 1.25;
+      else if (vLower.includes('crysta') || vLower.includes('innova')) mult = 1.55;
+      else if (vLower.includes('hycross')) mult = 1.9;
+      else if (vLower.includes('fortuner')) mult = 2.5;
+      else if (vLower.includes('urbania') && (vLower.includes('16') || vLower.includes('17'))) mult = 2.9;
+      else if (vLower.includes('urbania')) mult = 2.6;
+      else if (vLower.includes('tempo') && (vLower.includes('20') || vLower.includes('21'))) mult = 2.7;
+      else if (vLower.includes('tempo') && (vLower.includes('16') || vLower.includes('17'))) mult = 2.2;
+      else if (vLower.includes('tempo') || vLower.includes('12')) mult = 1.8;
+      else if (vLower.includes('27') || vLower.includes('mini bus')) mult = 3.4;
+      else if (vLower.includes('40')) mult = 4.2;
+      else if (vLower.includes('45')) mult = 4.8;
+      else if (v.seats > 20) mult = 3.8;
+      else if (v.seats > 10) mult = 2.2;
+      else if (v.seats > 5) mult = 1.4;
+
+      const calc = Math.round((baseNum * mult) / 50) * 50;
+      priceStr = `₹${calc.toLocaleString('en-IN')}`;
+    }
+
+    return [vName, priceStr, v];
+  }) : (tour?.prices || []).map(([vName, p]) => [vName, p, null]);
+
+  const tourPricesList = computedPrices.map(([vName, p]) => [vName, p]);
+
   const handleBookTour = (name, price, vehicleName) => {
     selectBooking({
       to: tour?.name || name,
@@ -26,7 +68,12 @@ export default function TourDetail() {
       vehicle: vehicleName || 'Swift Dzire / Etios (Sedan 4-Seater)',
       price: price
     });
-    setPayModalData({ name, price });
+    setPayModalData({ 
+      name, 
+      price, 
+      vehicle: vehicleName || (tourPricesList[0] ? tourPricesList[0][0] : ''),
+      prices: tourPricesList
+    });
   };
 
   if (!tour) {
@@ -158,94 +205,81 @@ export default function TourDetail() {
           </div>
 
           <div className="vehicle-tariff-grid">
-            {(() => {
-              const activeFleets = (fleets && fleets.length > 0) ? fleets : null;
-              const baseNum = parseInt((tour.startingPrice || '3500').replace(/[^0-9]/g, ''), 10) || 3500;
+            {computedPrices.map(([vehicle, price, vObjOverride], i) => {
+              const vInfo = vObjOverride || getVehicleInfo(vehicle, fleets);
+                const waMessage = `Hi, I want to book ${tour.name} with ${vehicle} at ${price}. Please confirm availability.`;
+                const featuresList = Array.isArray(vInfo.features) ? vInfo.features : (vInfo.features ? [vInfo.features] : ['AC', 'Music', 'USB']);
 
-              // Generate price items for all vehicles in active fleet
-              const itemsToRender = activeFleets ? activeFleets.map(v => {
-                const vName = v.name || v.id;
-                const vLower = vName.toLowerCase();
-                
-                // Match with predefined package prices if exists
-                const foundPrice = tour.prices?.find(([pName]) => {
-                  const pLower = pName.toLowerCase();
-                  return vLower.includes(pLower) || pLower.includes(vLower);
-                });
-
-                let priceStr = foundPrice ? foundPrice[1] : null;
-                if (!priceStr) {
-                  let mult = 1.0;
-                  if (vLower.includes('ertiga')) mult = 1.25;
-                  else if (vLower.includes('crysta') || vLower.includes('innova')) mult = 1.55;
-                  else if (vLower.includes('hycross')) mult = 1.9;
-                  else if (vLower.includes('fortuner')) mult = 2.5;
-                  else if (vLower.includes('urbania') && (vLower.includes('16') || vLower.includes('17'))) mult = 2.9;
-                  else if (vLower.includes('urbania')) mult = 2.6;
-                  else if (vLower.includes('tempo') && (vLower.includes('20') || vLower.includes('21'))) mult = 2.7;
-                  else if (vLower.includes('tempo') && (vLower.includes('16') || vLower.includes('17'))) mult = 2.2;
-                  else if (vLower.includes('tempo') || vLower.includes('12')) mult = 1.8;
-                  else if (vLower.includes('27') || vLower.includes('mini bus')) mult = 3.4;
-                  else if (vLower.includes('40')) mult = 4.2;
-                  else if (vLower.includes('45')) mult = 4.8;
-                  else if (v.seats > 20) mult = 3.8;
-                  else if (v.seats > 10) mult = 2.2;
-                  else if (v.seats > 5) mult = 1.4;
-
-                  const calc = Math.round((baseNum * mult) / 50) * 50;
-                  priceStr = `₹${calc.toLocaleString('en-IN')}`;
-                }
-
-                return [vName, priceStr, v];
-              }) : (tour.prices || []).map(([vName, p]) => [vName, p, null]);
-
-              return itemsToRender.map(([vehicle, price, vObjOverride], i) => {
-                const vInfo = vObjOverride || getVehicleInfo(vehicle, fleets);
                 return (
-                  <motion.div 
-                    className="tariff-card"
+                  <motion.article 
+                    className="tariff-card tour-fleet-style-card"
                     key={vehicle}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                    transition={{ duration: 0.3, delay: i * 0.04 }}
                   >
-                    <div className="tariff-card-media">
-                      <img src={vInfo.image} alt={vehicle} loading="lazy" />
-                      <span className="vehicle-cat-badge">{vInfo.category || 'AC CAB'}</span>
-                      <span className="vehicle-seat-badge"><Users size={12}/> {vInfo.seats}</span>
+                    <div className="tour-vehicle-media">
+                      <img src={vInfo.image} alt={`${vehicle} for ${tour.name}`} loading="lazy" />
+                      <span className="tour-media-type">{vInfo.category || 'AC CAB'}</span>
+                      <div className="tour-media-bottom">
+                        <span className="tour-media-rate">{price}</span>
+                        <span className="tour-media-seats"><Users size={13} /> {vInfo.seats || '4+1'}</span>
+                      </div>
                     </div>
-                    <div className="tariff-card-header">
-                      <h3>{vehicle}</h3>
-                    </div>
-                    <div className="tariff-card-body">
-                      <div className="tariff-price">
-                        <span className="price-val">{price}</span>
-                        <span className="price-label">Fixed Package Rate</span>
+
+                    <div className="tour-vehicle-info">
+                      <div className="tour-vehicle-heading">
+                        <div>
+                          <span className="tour-vehicle-subcat">{vInfo.category || 'CAB SERVICE'}</span>
+                          <h3>{vehicle}</h3>
+                        </div>
+                        <span className="tour-vehicle-capacity">{vInfo.seats ? `${vInfo.seats} seats` : 'AC CAB'}</span>
                       </div>
 
-                      <div className="tariff-card-actions">
+                      {vInfo.use && (
+                        <p className="tour-vehicle-summary">{vInfo.use}</p>
+                      )}
+
+                      <div className="tour-vehicle-features">
+                        {featuresList.map(feature => (
+                          <span key={feature}><Wind size={12} /> {feature}</span>
+                        ))}
+                        {vInfo.bags && <span><Luggage size={12} /> {vInfo.bags} bags</span>}
+                        {vInfo.fuel && <span><Fuel size={12} /> {vInfo.fuel}</span>}
+                      </div>
+
+                      <div className="tour-vehicle-rate-pill">
+                        <div className="rate-pill-left">
+                          <small>All-Inclusive Fare</small>
+                          <strong>{price}</strong>
+                        </div>
+                        <div className="rate-pill-badge">
+                          <Check size={13} /> Tolls & Driver Incl.
+                        </div>
+                      </div>
+
+                      <div className="tour-vehicle-actions">
                         <button 
                           type="button" 
-                          className="tariff-book-btn"
+                          className="tour-btn-book"
                           onClick={() => handleBookTour(`${tour.name} (${vehicle})`, price, vehicle)}
                         >
                           Book ₹1,000 Token 💳
                         </button>
                         <a 
-                          href={`https://wa.me/918688624758?text=${encodeURIComponent(`Hi, I want to book ${tour.name} with ${vehicle} at ${price}.`)}`}
+                          href={`https://wa.me/918688624758?text=${encodeURIComponent(waMessage)}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="tariff-wa-btn"
+                          className="tour-btn-wa"
                         >
                           <MessageCircle size={15}/> WhatsApp
                         </a>
                       </div>
                     </div>
-                  </motion.div>
+                  </motion.article>
                 );
-              });
-            })()}
+              })}
           </div>
         </div>
       </section>
@@ -390,9 +424,16 @@ export default function TourDetail() {
           onClose={() => setPayModalData(null)}
           initialData={{
             type: 'tour',
-            service: `${payModalData.name}`,
+            tourName: tour.name,
+            service: tour.name,
+            displayName: payModalData.name,
+            vehicle: payModalData.vehicle,
             amount: '1000',
-            fullAmount: payModalData.price || '3500'
+            fullAmount: payModalData.price || tour.startingPrice || '3500',
+            duration: tour.duration,
+            route: tour.route,
+            prices: payModalData.prices || tourPricesList,
+            slug: tour.slug
           }}
         />
       )}

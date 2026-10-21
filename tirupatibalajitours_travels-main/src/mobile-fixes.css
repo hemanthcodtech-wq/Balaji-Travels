@@ -267,7 +267,11 @@
   .cab-route-hero-image { height: 260px; border-radius: 18px; }
   .route-facts { grid-template-columns: 1fr; gap: 10px; }
   .route-guide-grid { grid-template-columns: 1fr; }
-  .fleet-card-grid, .package-grid, .why-grid.six, .full-fleet-grid {
+  .fleet-card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+  .package-grid, .why-grid.six, .full-fleet-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }

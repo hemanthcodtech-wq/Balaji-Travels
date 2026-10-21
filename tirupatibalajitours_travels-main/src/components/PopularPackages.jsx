@@ -169,10 +169,7 @@ export default function PopularPackages() {
                         </span>
                       ))}
                     </div>
-                    {/* Clean comma-separated route corridor display */}
-                    <p style={{ margin: '8px 0 0 0', fontSize: '11px', color: '#64748b', lineHeight: 1.4, fontWeight: 500 }}>
-                      <strong style={{ color: '#0284c7' }}>Corridor:</strong> {placesList.join(', ')}
-                    </p>
+
                   </div>
                   <div className="popular-actions-two">
                     <button 

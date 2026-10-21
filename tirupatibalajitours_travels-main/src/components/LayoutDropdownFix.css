@@ -1,10 +1,15 @@
 /* Dropdown overflow fix: keep desktop menus clean and fully contained. */
 .nav-cabs-menu {
   box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  max-height: min(65vh, 480px) !important;
   width: min(620px, 96vw);
   max-width: min(620px, 96vw);
+  scrollbar-width: thin !important;
+  scrollbar-color: #0284c7 #f1f5f9 !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
 }
 
 .nav-cabs-menu.multi-col {

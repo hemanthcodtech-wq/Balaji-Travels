@@ -495,8 +495,8 @@
 /* Fleet Cards Grid */
 .fleet-card-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 24px;
   margin-bottom: 45px;
 }
 .fleet-pricing-card {
@@ -1166,7 +1166,12 @@
 }
 
 @media (max-width: 640px) {
-  .fleet-card-grid, .package-grid, .why-grid.six, .full-fleet-grid, .option-grid {
+  .fleet-card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+  .package-grid, .why-grid.six, .full-fleet-grid, .option-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
   }

@@ -3,12 +3,14 @@ import { Link, useParams } from 'react-router-dom';
 import { 
   ArrowRight, CheckCircle2, Clock3, MapPin, Phone, MessageCircle, 
   Route as RouteIcon, ShieldCheck, Landmark, Info, Sparkles, Car, 
-  Users, Fuel, ChevronDown, Award, Calendar, Navigation, CreditCard
+  Users, Fuel, ChevronDown, Award, Calendar, Navigation, CreditCard,
+  Wind, Luggage, Check
 } from 'lucide-react';
 import { phone, whatsappBooking, vehicles } from '../data/siteData';
 import { getCabRoute } from '../data/cabRoutes';
 import { srikalahastiContent } from '../data/srikalahastiContent';
 import { cabRouteContent } from '../data/cabRouteContent';
+import { getVehicleInfo } from '../data/packageData';
 import StatsBanner from '../components/StatsBanner';
 import EasebuzzModal from '../components/EasebuzzModal';
 import { useData } from '../context/DataContext';
@@ -105,21 +107,16 @@ function DetailedRouteContent({ content, route }) {
           <p>Clean, sanitized, comfortable AC cabs with professional drivers</p>
         </div>
 
-        <div className="fleet-card-grid">
+        <div className="fleet-card-grid enhanced-cab-fleet-grid">
           {(() => {
-            const fallbackCars = [
-              { name: 'Swift Dzire / Etios', type: 'Sedan', seats: '4 Passengers', luggage: '2 Bags', price: route.prices?.[0]?.[1] || route.starting || '₹2,880', popular: false },
-              { name: 'Maruti Ertiga', type: 'MUV', seats: '6 Passengers', luggage: '3 Bags', price: route.prices?.[1]?.[1] || '₹3,580', popular: true },
-              { name: 'Toyota Innova Crysta', type: 'Premium SUV', seats: '7 Passengers', luggage: '4 Bags', price: route.prices?.[2]?.[1] || '₹4,500', popular: false },
-              { name: 'Tempo Traveller 12 Seater', type: 'Minibus', seats: '12 Passengers', luggage: '6+ Bags', price: route.prices?.[3]?.[1] || '₹6,000', popular: false }
-            ];
-
             const activeFleets = (fleets && fleets.length > 0) ? fleets : null;
             const baseSedanNum = parseInt((route.starting || route.prices?.[0]?.[1] || '2880').replace(/[^0-9]/g, ''), 10) || 2880;
 
-            const carList = activeFleets ? activeFleets.map(v => {
-              const vName = v.name || v.id;
+            // Compute prices and vehicle info for every fleet vehicle
+            const carList = (activeFleets || vehicles).map(v => {
+              const vName = v.name || v[0] || v.id;
               const vLower = vName.toLowerCase();
+              const vInfo = getVehicleInfo(vName, activeFleets);
 
               // Match predefined route price if available
               const foundPrice = route.prices?.find(([pName]) => {
@@ -142,63 +139,99 @@ function DetailedRouteContent({ content, route }) {
                 else if (vLower.includes('27') || vLower.includes('mini bus')) mult = 3.4;
                 else if (vLower.includes('40')) mult = 4.2;
                 else if (vLower.includes('45')) mult = 4.8;
-                else if (v.seats > 20) mult = 3.8;
-                else if (v.seats > 10) mult = 2.2;
-                else if (v.seats > 5) mult = 1.4;
+                else if ((v.seats || 4) > 20) mult = 3.8;
+                else if ((v.seats || 4) > 10) mult = 2.2;
+                else if ((v.seats || 4) > 5) mult = 1.4;
 
                 const calc = Math.round((baseSedanNum * mult) / 50) * 50;
                 priceStr = `₹${calc.toLocaleString('en-IN')}`;
               }
 
+              const featuresList = Array.isArray(vInfo.features) ? vInfo.features : (vInfo.features ? [vInfo.features] : ['AC', 'Music', 'USB']);
+              const isPopular = vLower.includes('ertiga') || vLower.includes('innova') || vLower.includes('crysta');
+
               return {
                 name: vName,
-                type: v.category || (v.seats > 10 ? 'Minibus' : v.seats > 5 ? 'SUV / MUV' : 'Sedan'),
-                seats: `${v.seats || 4} Passengers`,
-                luggage: v.bags || '3 Bags',
+                category: vInfo.category || v.category || (vInfo.seats > 10 ? 'TEMPO / MINIBUS' : vInfo.seats > 5 ? 'SUV / MUV' : 'AC SEDAN'),
+                seats: vInfo.seats || v.seats || '4+1',
+                bags: vInfo.bags || v.bags || '3',
+                fuel: vInfo.fuel || '10 km/l',
+                image: vInfo.image || v.image,
+                use: vInfo.use,
+                features: featuresList,
                 price: priceStr,
-                popular: vLower.includes('ertiga') || vLower.includes('innova')
+                popular: isPopular
               };
-            }) : fallbackCars;
+            });
 
-            return carList.map((car, idx) => (
-              <div className={`fleet-pricing-card ${car.popular ? 'featured' : ''}`} key={idx}>
-                {car.popular && <span className="popular-tag">MOST POPULAR</span>}
-                <div className="car-card-header">
-                  <span className="car-type">{car.type}</span>
-                  <h3>{car.name}</h3>
+            const allComputedPrices = carList.map(c => [c.name, c.price]);
+
+            return carList.map((car, idx) => {
+              const waMessage = `Hi, I want to book a ${car.name} for ${route.title} at ${car.price}. Please confirm availability and driver pickup.`;
+
+              return (
+                <div className={`tariff-card tour-fleet-style-card ${car.popular ? 'featured' : ''}`} key={idx}>
+                  <div className="tour-vehicle-media">
+                    <img src={car.image} alt={`${car.name} for ${route.title}`} loading="lazy" />
+                    <span className="tour-media-type">{car.category}</span>
+                    <div className="tour-media-bottom">
+                      <span className="tour-media-rate">{car.price}</span>
+                      <span className="tour-media-seats"><Users size={13} /> {car.seats} Seats</span>
+                    </div>
+                  </div>
+
+                  <div className="tour-vehicle-info">
+                    <div className="tour-vehicle-heading">
+                      <div>
+                        <span className="tour-vehicle-subcat">{car.category}</span>
+                        <h3>{car.name}</h3>
+                      </div>
+                      <span className="tour-vehicle-capacity">{car.seats ? `${car.seats} seats` : 'AC CAB'}</span>
+                    </div>
+
+                    {car.use && (
+                      <p className="tour-vehicle-summary">{car.use}</p>
+                    )}
+
+                    <div className="tour-vehicle-features">
+                      {car.features.map(f => (
+                        <span key={f}><Wind size={12} /> {f}</span>
+                      ))}
+                      {car.bags && <span><Luggage size={12} /> {car.bags} bags</span>}
+                      {car.fuel && <span><Fuel size={12} /> {car.fuel}</span>}
+                    </div>
+
+                    <div className="tour-vehicle-rate-pill">
+                      <div className="rate-pill-left">
+                        <small>All-Inclusive Route Fare</small>
+                        <strong>{car.price}</strong>
+                      </div>
+                      <div className="rate-pill-badge">
+                        <Check size={13} /> Tolls & Driver Incl.
+                      </div>
+                    </div>
+
+                    <div className="tour-vehicle-actions">
+                      <button 
+                        type="button" 
+                        className="tour-btn-book"
+                        onClick={() => setPayCar({ name: car.name, price: car.price, title: route.title, prices: allComputedPrices })}
+                      >
+                        Book ₹500 Token 💳
+                      </button>
+                      <a 
+                        href={`https://wa.me/918688624758?text=${encodeURIComponent(waMessage)}`}
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="tour-btn-wa"
+                      >
+                        <MessageCircle size={15}/> WhatsApp
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <div className="car-price-tag">
-                  <small>Starting from</small>
-                  <strong>{car.price}</strong>
-                </div>
-                <ul className="car-specs">
-                  <li><Users size={14} /> {car.seats}</li>
-                  <li><Car size={14} /> {car.luggage}</li>
-                  <li><CheckCircle2 size={14} /> Air Conditioned (AC)</li>
-                  <li><CheckCircle2 size={14} /> Clean & Sanitized Interior</li>
-                  <li><CheckCircle2 size={14} /> Fuel & Driver Allowance Incl.</li>
-                </ul>
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-                  <a 
-                    href={whatsappBooking(`Hi, I would like to book a ${car.name} for ${route.title} starting at ${car.price}. Please confirm exact fare.`)}
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="button"
-                    style={{ flex: 1, padding: '0.6rem', fontSize: '0.85rem' }}
-                  >
-                    <MessageCircle size={14} /> WhatsApp
-                  </a>
-                  <button
-                    type="button"
-                    className="button"
-                    style={{ flex: 1, padding: '0.6rem', fontSize: '0.85rem', background: 'linear-gradient(135deg, #0284c7, #0369a1)', borderColor: '#0284c7' }}
-                    onClick={() => setPayCar({ name: car.name, price: car.price, title: route.title })}
-                  >
-                    <CreditCard size={14} /> Book 💳
-                  </button>
-                </div>
-              </div>
-            ));
+              );
+            });
           })()}
         </div>
       </section>
@@ -347,9 +380,13 @@ function DetailedRouteContent({ content, route }) {
           onClose={() => setPayCar(null)}
           initialData={{
             type: 'route',
-            service: `${payCar.name} for ${payCar.title || 'Cab Route'}`,
-            prices: route.prices,
-            amount: '500'
+            service: `${payCar.title || route.title}`,
+            vehicle: payCar.name,
+            prices: payCar.prices || route.prices,
+            amount: '500',
+            fullAmount: payCar.price || route.starting,
+            slug: route.slug,
+            route: route.route
           }}
         />
       )}
@@ -565,10 +602,12 @@ export default function CabRoutePage({ route: routeProp }) {
           onClose={() => setShowHeroPayModal(false)}
           initialData={{
             type: 'route',
-            service: `${route.title} Booking Token Deposit`,
+            service: route.title,
             prices: route.prices,
             amount: '500',
-            fullAmount: route.starting
+            fullAmount: route.starting,
+            slug: route.slug,
+            route: route.route
           }}
         />
       )}
