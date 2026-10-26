@@ -1,16 +1,22 @@
 import React from 'react';
 import { Lock, Eye, ShieldCheck, Database, PhoneCall, ArrowRight } from 'lucide-react';
+import SEO from '../components/SEO';
 import { phone, whatsapp, email } from '../data/siteData';
 import './LegalPage.css';
 
 export default function PrivacyPolicy() {
   return (
     <div className="legal-page">
+      <SEO
+        title="Privacy Policy – Taxi in Tirupati"
+        description="Review the official Privacy Policy of Taxi in Tirupati. We are committed to safeguarding your personal data, booking details, and privacy."
+        canonical="https://taxi-in-tirupati.com/privacy-policy"
+      />
       <div className="legal-hero">
         <span className="legal-badge">100% SECURE & CONFIDENTIAL</span>
-        <h1>Privacy Policy</h1>
+        <h1>Privacy Policy – Taxi in Tirupati</h1>
         <p>
-          At Tirupati Balaji Tours Travels, we value your privacy and security above all else. This policy outlines how we collect, use, and protect your personal information.
+          At Taxi in Tirupati, we value your privacy and security above all else. This policy outlines how we collect, use, and protect your personal information.
         </p>
       </div>
 
@@ -53,7 +59,7 @@ export default function PrivacyPolicy() {
           <section id="data-protection" className="legal-card">
             <h2><Lock /> 3. Data Protection & Confidentiality</h2>
             <div className="legal-alert legal-alert-success">
-              <strong>ZERO SPAM / NO DATA SELLING:</strong> Tirupati Balaji Tours Travels NEVER sells, rents, trades, or leases customer personal information to third-party marketing companies.
+              <strong>ZERO SPAM / NO DATA SELLING:</strong> Taxi in Tirupati NEVER sells, rents, trades, or leases customer personal information to third-party marketing companies.
             </div>
             <p>
               We implement industry-standard administrative and electronic security measures to safeguard your personal information against unauthorized access, loss, or misuse.

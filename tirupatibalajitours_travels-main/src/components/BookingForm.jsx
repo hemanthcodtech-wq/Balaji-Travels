@@ -230,7 +230,7 @@ export default function BookingForm({ showPackages = true }) {
       status: 'Pending'
     });
 
-    const message = `🙏 *Cab / Tour Enquiry – Tirupati Balaji Tours & Travels*
+    const message = `🙏 *Cab / Tour Enquiry – Taxi in Tirupati*
 
 📍 *Pickup:* ${f.from}
 📍 *Drop / Destination:* ${f.to}

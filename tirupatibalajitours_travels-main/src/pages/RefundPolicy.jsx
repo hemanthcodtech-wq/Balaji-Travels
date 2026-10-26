@@ -1,16 +1,22 @@
 import React from 'react';
 import { ShieldCheck, AlertTriangle, Clock, RefreshCw, PhoneCall, ArrowRight, CheckCircle, XCircle } from 'lucide-react';
+import SEO from '../components/SEO';
 import { phone, whatsapp, email } from '../data/siteData';
 import './LegalPage.css';
 
 export default function RefundPolicy() {
   return (
     <div className="legal-page">
+      <SEO
+        title="Refund & Cancellation Policy – Taxi in Tirupati"
+        description="Learn about our transparent refund and cancellation guidelines for cab and tour package bookings with Taxi in Tirupati."
+        canonical="https://taxi-in-tirupati.com/refund-and-cancellation-policy"
+      />
       <div className="legal-hero">
         <span className="legal-badge">OFFICIAL REFUND POLICY</span>
-        <h1>100% Easy Refund and Cancellation Policy</h1>
+        <h1>Refund & Cancellation Policy – Taxi in Tirupati</h1>
         <p>
-          Clear, fair, and transparent guidelines regarding cancellations, vehicle rental refunds, driver dispatch timelines, and booking modifications.
+          Clear, fair, and transparent guidelines regarding cancellations, vehicle rental refunds, driver dispatch timelines, and booking modifications with Taxi in Tirupati.
         </p>
       </div>
 

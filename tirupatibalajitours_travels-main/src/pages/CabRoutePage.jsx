@@ -13,6 +13,7 @@ import { cabRouteContent } from '../data/cabRouteContent';
 import { getVehicleInfo } from '../data/packageData';
 import StatsBanner from '../components/StatsBanner';
 import EasebuzzModal from '../components/EasebuzzModal';
+import SEO from '../components/SEO';
 import { useData } from '../context/DataContext';
 import './CabRoutePage.css';
 
@@ -327,7 +328,7 @@ function DetailedRouteContent({ content, route }) {
       <section className="section longform-section pale">
         <div className="section-header-centered">
           <span className="badge-pill"><Award size={13} /> TRUST & RELIABILITY</span>
-          <h2>Why Devotees Choose Tirupati Balaji Tours</h2>
+          <h2>Why Devotees Choose Taxi in Tirupati</h2>
           <p>Your comfort, safety, and spiritual journey are our top priority</p>
         </div>
 
@@ -405,7 +406,7 @@ export default function CabRoutePage({ route: routeProp }) {
         <section className="section not-found-section">
           <h1>Cab Route Not Found</h1>
           <p>We couldn't find the specific cab route you were looking for.</p>
-          <Link className="button" to="/tirupati-cabs/tirupati-to-srikalahasti-distance">
+          <Link className="button" to="/cabs">
             Browse Tirupati Cab Routes
           </Link>
         </section>
@@ -414,6 +415,22 @@ export default function CabRoutePage({ route: routeProp }) {
   }
 
   const isSrikalahasti = route.slug.includes('tirupati-to-srikalahasti');
+
+  const cabSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Tirupati Cabs', item: 'https://taxi-in-tirupati.com/cabs' },
+          { '@type': 'ListItem', position: 3, name: route.title, item: `https://taxi-in-tirupati.com/tirupati-cabs/${route.slug}` }
+        ]
+      }
+    ]
+  };
+
+  const dest = route.shortTitle.split('→')[1]?.trim() || 'destination';
   const srikalahastiStandardContent = isSrikalahasti ? {
     eyebrow: 'SRIKALAHASTI PILGRIMAGE CAB',
     intro: srikalahastiContent.intro,
@@ -469,6 +486,13 @@ export default function CabRoutePage({ route: routeProp }) {
 
   return (
     <main className="cab-route-page">
+      <SEO
+        title={`${route.title} – Book AC Cab from Tirupati`}
+        description={`${route.description} Distance: ${route.distance}. Time: ${route.time}. Starting from ${route.starting}. 24/7 doorstep pickup, verified drivers.`}
+        canonical={`/tirupati-cabs/${route.slug}`}
+        image={route.image}
+        schema={cabSchema}
+      />
       {/* Hero Section */}
       <section className="cab-route-hero">
         <div className="cab-route-hero-backdrop"></div>

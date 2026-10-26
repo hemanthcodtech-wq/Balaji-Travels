@@ -9,6 +9,7 @@ import {
   FaFacebookF, FaXTwitter, FaInstagram, FaYoutube,
   FaLinkedinIn, FaWhatsapp
 } from 'react-icons/fa6';
+import logoImg from '../assests/logo.png';
 import { phone, whatsapp, whatsappChat, email } from '../data/siteData';
 import { cabRoutes } from '../data/cabRoutes';
 import { serviceLinks, taxiLinks } from '../data/servicePages';
@@ -66,12 +67,12 @@ const socialLinks = [
 const Brand = ({ header = false, logoOnly = false } = {}) => (
   <Link to="/" className={`brand ${header ? 'header-brand-only' : ''}`}>
     <img
-      src="https://res.cloudinary.com/znbhjevm/image/upload/v1786735614/6a36504b-4108-47ac-8a09-34f153b10f97.png"
-      alt="Tirupati Balaji Tours & Travels"
+      src={logoImg}
+      alt="Taxi in Tirupati"
     />
     {!header && !logoOnly && (
       <strong>
-        TIRUPATI BALAJI<small>TOURS & TRAVELS</small>
+        TAXI IN<small>TIRUPATI</small>
       </strong>
     )}
   </Link>
@@ -437,7 +438,7 @@ export default function Layout() {
 
                       <NavLink 
                         onClick={() => setOpen(false)} 
-                        to="/tirupati-cabs/tirupati-to-srikalahasti-distance" 
+                        to="/cabs" 
                         className="mob-link-card mob-view-all-card"
                       >
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1, minWidth: 0 }}>
@@ -548,7 +549,7 @@ export default function Layout() {
       <footer className="site-footer">
         <div>
           <Brand />
-          <p>Faithful journeys, comfortable miles, and memories that stay with you. No. 1 trusted cab service & pilgrimage operator in Tirupati.</p>
+          <p>Trusted taxi service in Tirupati for Tirumala, temple tours, and South India pilgrimage journeys. No. 1 rated taxi & cab service with 24/7 support.</p>
           <div className="footer-contact-details" style={{ margin: '12px 0 16px', fontSize: '11px', lineHeight: '1.8' }}>
             <div>📞 <a href={`tel:${phone}`}>+91 86886 24758</a> / <a href="tel:+916303524758">+91 63035 24758</a></div>
             <div>✉️ <a href={`mailto:${email}`}>{email}</a></div>
@@ -575,14 +576,14 @@ export default function Layout() {
 
         <div>
           <h4>Popular Cab Routes</h4>
-          <Link to="/tirupati-cabs/tirupati-to-srikalahasti-distance">Tirupati to Srikalahasti Cab</Link>
-          <Link to="/tirupati-cabs/tirupati-to-arunachalam-distance">Tirupati to Arunachalam Cab</Link>
-          <Link to="/tirupati-cabs/tirupati-to-tirumala-distance">Tirupati to Tirumala Cab</Link>
-          <Link to="/tirupati-cabs/tirupati-to-kanipakam-distance">Tirupati to Kanipakam Cab</Link>
-          <Link to="/tirupati-cabs/tirupati-to-vellore-golden-temple-distance">Tirupati to Vellore Golden Temple</Link>
-          <Link to="/tirupati-cabs/tirupati-to-chennai-distance">Tirupati to Chennai Airport Cab</Link>
-          <Link to="/tirupati-cabs/tirupati-to-bangalore-distance">Tirupati to Bangalore Cab</Link>
-          <Link to="/tirupati-cabs/tirupati-to-kanchipuram-distance">Tirupati to Kanchipuram Cab</Link>
+          <Link to="/tirupati-cabs/tirupati-to-srikalahasti-cab">Tirupati to Srikalahasti Cab</Link>
+          <Link to="/tirupati-cabs/tirupati-to-arunachalam-cab">Tirupati to Arunachalam Cab</Link>
+          <Link to="/tirupati-cabs/tirupati-to-tirumala-cab">Tirupati to Tirumala Cab</Link>
+          <Link to="/tirupati-cabs/tirupati-to-kanipakam-cab">Tirupati to Kanipakam Cab</Link>
+          <Link to="/tirupati-cabs/tirupati-to-vellore-golden-temple-cab">Tirupati to Vellore Golden Temple</Link>
+          <Link to="/tirupati-cabs/tirupati-to-chennai-cab">Tirupati to Chennai Airport Cab</Link>
+          <Link to="/tirupati-cabs/tirupati-to-bangalore-cab">Tirupati to Bangalore Cab</Link>
+          <Link to="/tirupati-cabs/tirupati-to-kanchipuram-cab">Tirupati to Kanchipuram Cab</Link>
         </div>
 
         <div>
@@ -611,7 +612,7 @@ export default function Layout() {
 
       <div className="footer-copyright-strip" style={{ background: '#050b28', color: '#94a3b8', fontSize: '11px', textAlign: 'center', padding: '14px clamp(20px, 3vw, 50px)', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
         <div style={{ width: '100%', maxWidth: '100%', margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
-          <span>© {new Date().getFullYear()} Tirupati Balaji Tours & Travels. All Rights Reserved.</span>
+          <span>© {new Date().getFullYear()} Taxi in Tirupati. All Rights Reserved.</span>
           <span>No. 1 Taxi & Tour Agency in Tirupati · 24/7 Verified Service</span>
         </div>
       </div>

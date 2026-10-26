@@ -1,6 +1,7 @@
 import { ShieldCheck, Headphones, Clock3, Users, MapPin, Sparkles, CheckCircle2, MessageCircle, Route, Car, BusFront, Plane, HeartHandshake, Navigation, Star } from 'lucide-react';
 import Page from './PageTemplate';
 import { images, whatsapp } from '../data/siteData';
+import SEO from '../components/SEO';
 import AnimatedCounter from '../components/AnimatedCounter';
 import StatsBanner from '../components/StatsBanner';
 import ScrollReveal from '../components/ScrollReveal';
@@ -32,11 +33,24 @@ const promises = [
 export default function About() {
   return (
     <Page
-      eyebrow="ABOUT TIRUPATI BALAJI TOURS & TRAVELS"
-      title="Travel through Tirupati with a team that understands the journey."
+      eyebrow="ABOUT TAXI IN TIRUPATI"
+      title="About Taxi in Tirupati – Your Trusted Travel Partner"
       text="We provide cars, Tempo Travellers, Urbania and buses for temple visits, airport transfers, local travel, family trips, group tours and outstation journeys."
       image={images.hero}
     >
+      <SEO
+        title="About Taxi in Tirupati – Your Trusted Travel Partner"
+        description="Learn about Taxi in Tirupati – a trusted cab and tour service for Tirumala darshan, temple circuits, airport transfers and South India pilgrimage packages. Verified drivers, clean AC fleet."
+        canonical="/about-us"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+            { '@type': 'ListItem', position: 2, name: 'About Us', item: 'https://taxi-in-tirupati.com/about-us' }
+          ]
+        }}
+      />
       <section className="content prose">
         <ScrollReveal direction="up">
           <div className="about-story">
@@ -133,7 +147,7 @@ export default function About() {
               ))}
               <a
                 className="button"
-                href={`${whatsapp}?text=${encodeURIComponent('Hi, I want to plan a trip with Tirupati Balaji Tours & Travels. Please help me choose the right vehicle.')}`}
+                href={`${whatsapp}?text=${encodeURIComponent('Hi, I want to plan a trip with Taxi in Tirupati. Please help me choose the right vehicle.')}`}
                 target="_blank"
                 rel="noreferrer"
               >

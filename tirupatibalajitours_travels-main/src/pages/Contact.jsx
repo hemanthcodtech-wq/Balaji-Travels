@@ -7,6 +7,7 @@ import {
 import Page from './PageTemplate';
 import { email, phone, whatsapp } from '../data/siteData';
 import StatsBanner from '../components/StatsBanner';
+import SEO from '../components/SEO';
 import './Contact.css';
 
 export default function Contact() {
@@ -16,7 +17,7 @@ export default function Contact() {
   function handleSubmit(e) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const msg = `Hello Tirupati Balaji Tours & Travels!%0A%0AName: ${data.get('name')}%0APhone: ${data.get('phone')}%0AService Required: ${data.get('service')}%0ADate: ${data.get('date') || 'Flexible'}%0AMessage: ${data.get('message')}`;
+    const msg = `Hello Taxi in Tirupati!%0A%0AName: ${data.get('name')}%0APhone: ${data.get('phone')}%0AService Required: ${data.get('service')}%0ADate: ${data.get('date') || 'Flexible'}%0AMessage: ${data.get('message')}`;
     window.open(`${whatsapp}?text=${msg}`, '_blank', 'noopener');
     setSubmitted(true);
   }
@@ -47,6 +48,19 @@ export default function Contact() {
       text="Have questions about temple darshan packages, cab rentals, or outstation tours? Reach out to our team 24/7 via Phone, WhatsApp, or Email for instant assistance."
       image="https://res.cloudinary.com/znbhjevm/image/upload/v1786735447/c346a3bf-d3de-452f-abc8-d79b13b21eb8.png"
     >
+      <SEO
+        title="Contact Taxi in Tirupati – 24/7 Cab Booking Support"
+        description="Contact Taxi in Tirupati for instant cab bookings, temple tour packages, airport transfers and outstation taxi quotes. Call or WhatsApp +91-8688624758 anytime."
+        canonical="/contact-us"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Contact Us', item: 'https://taxi-in-tirupati.com/contact-us' }
+          ]
+        }}
+      />
       <div className="contact-page-wrapper">
         {/* --- 4 QUICK CONTACT CARDS --- */}
         <section className="contact-cards-grid">

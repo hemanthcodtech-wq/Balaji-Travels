@@ -12,6 +12,7 @@ import { fleet } from '../data/fleetData';
 import { useData } from '../context/DataContext';
 import StatsBanner from '../components/StatsBanner';
 import EasebuzzModal from '../components/EasebuzzModal';
+import SEO from '../components/SEO';
 import './ServiceLanding.css';
 
 const featureIcons = [Snowflake, MonitorPlay, BatteryCharging, Armchair, Headphones, SprayCan];
@@ -451,13 +452,38 @@ export default function ServiceLanding({ slug: routeSlug }) {
 
   return (
     <main className={`service-page ${isPackagePage ? 'package-detail-page' : ''} ${isTaxiServicePage ? 'taxi-service-page' : ''}`}>
+      <SEO
+        title={`${data.title} | Taxi in Tirupati`}
+        description={`${data.intro} Book online or call +91-8688624758. 24/7 AC cabs, verified drivers, transparent pricing.`}
+        canonical={`/${slug.startsWith('services/') ? slug : (isPackagePage ? `services/${slug}` : slug)}`}
+        schema={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'FAQPage',
+              mainEntity: data.faqs.map(([q, a]) => ({
+                '@type': 'Question',
+                name: q,
+                acceptedAnswer: { '@type': 'Answer', text: a }
+              }))
+            },
+            {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+                { '@type': 'ListItem', position: 2, name: data.title, item: `https://taxi-in-tirupati.com/${slug}` }
+              ]
+            }
+          ]
+        }}
+      />
       {/* Hero Section */}
       <section className="service-hero">
         <div className="hero-backdrop-gradient"></div>
         <div className="service-hero-copy">
           <div className="hero-badge-pill">
             <Sparkles size={14} className="sparkle-icon" />
-            <span>TIRUPATI BALAJI TOURS & TRAVELS • 24x7 SERVICE</span>
+            <span>TAXI IN TIRUPATI • 24x7 VERIFIED SERVICE</span>
           </div>
 
           <span className="hero-kicker-tag">{data.eyebrow}</span>
@@ -939,7 +965,7 @@ export default function ServiceLanding({ slug: routeSlug }) {
       <section className="service-final-cta">
         <div className="final-cta-copy">
           <span className="badge-pill gold"><Sparkles size={13} /> READY FOR YOUR TRIP?</span>
-          <h2>Plan Your Journey with Tirupati Balaji Tours</h2>
+          <h2>Plan Your Journey with Taxi in Tirupati</h2>
           <p>Share your travel date, pickup point, destination, and vehicle preference. We will confirm vehicle availability and send an instant quote.</p>
           
           <div className="service-actions cta-actions">

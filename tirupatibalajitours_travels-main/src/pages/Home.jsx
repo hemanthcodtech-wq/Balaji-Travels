@@ -12,6 +12,7 @@ import {
   FaCircleCheck, FaRoute, FaLandmark, FaPlane, FaWandMagicSparkles
 } from 'react-icons/fa6';
 import { destinations, images, services, tours, vehicles, whatsapp, whatsappChat, whatsappBooking, phone } from '../data/siteData';
+import SEO from '../components/SEO';
 import { fleet } from '../data/fleetData';
 import { cabRoutes } from '../data/cabRoutes';
 import { useData } from '../context/DataContext';
@@ -27,7 +28,7 @@ import './MapSection.css';
 
 const homeFaqs = [
   {
-    q: 'How do I book a taxi in Tirupati with Tirupati Balaji Tours Travels?',
+    q: 'How do I book a taxi in Tirupati with Taxi in Tirupati?',
     a: 'You can book instantly by calling +91-8688624758 or sending a WhatsApp message with your travel date, pickup location, destination, passenger count, and preferred vehicle class.'
   },
   {
@@ -216,8 +217,32 @@ export default function Home() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
+  const homeSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'FAQPage',
+        mainEntity: homeFaqs.map(f => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a }
+        }))
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' }]
+      }
+    ]
+  };
+
   return (
     <main>
+      <SEO
+        title="Taxi in Tirupati – Book AC Cabs 24/7 for Temple Tours & Airport Transfers"
+        description="Book trusted taxi in Tirupati for Tirumala darshan, Srikalahasti, Kanipakam, Golden Temple & South India pilgrimage tours. 24/7 AC cabs, verified drivers, transparent pricing."
+        canonical="/"
+        schema={homeSchema}
+      />
       {/* --- HERO SECTION --- */}
       <section 
         className="hero home-hero"
@@ -386,7 +411,7 @@ export default function Home() {
             <p className="eyebrow">POPULAR OUTSTATION CAB ROUTES</p>
             <h2>Top Temple & City Routes from Tirupati</h2>
           </div>
-          <Link className="all-link" to="/tirupati-cabs/tirupati-to-srikalahasti-distance">
+          <Link className="all-link" to="/cabs">
             All Cab Routes <FaArrowRight size={14} />
           </Link>
         </div>
@@ -628,7 +653,7 @@ export default function Home() {
         </div>
         <div className="map-card">
           <iframe
-            title="Tirupati Balaji Tours & Travels location"
+            title="Taxi in Tirupati Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1985064.687311584!2d77.02313055625001!3d13.652929800000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4d4b244422c47f%3A0xf7585144979afd31!2sTirupati%20Balaji%20Tours%20Travels%20%7C%20Taxi%20in%20Tirupati!5e0!3m2!1sen!2sin!4v1786786636733!5m2!1sen!2sin"
             loading="lazy"
             referrerPolicy="strict-origin-when-cross-origin"

@@ -5,6 +5,7 @@ import { images, whatsapp, phone } from '../data/siteData';
 import { useData } from '../context/DataContext';
 import ScrollReveal from '../components/ScrollReveal';
 import EasebuzzModal from '../components/EasebuzzModal';
+import SEO from '../components/SEO';
 import './Destinations.css';
 
 export default function Destinations() {
@@ -56,6 +57,19 @@ export default function Destinations() {
 
   return (
     <main className="page destinations-main-page">
+      <SEO
+        title="Pilgrimage Destinations from Tirupati – Sacred Temples & Hill Towns"
+        description="Explore popular holy shrines and tourist destinations around Tirupati including Tirumala, Srikalahasti, Kanipakam, Sripuram Golden Temple, and Arunachalam."
+        canonical="https://taxi-in-tirupati.com/destinations"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Destinations', item: 'https://taxi-in-tirupati.com/destinations' }
+          ]
+        }}
+      />
       {/* HERO BANNER WITH DESTINATION SELECTION & BOOKING BUTTON */}
       <section 
         className="destinations-hero-section"

@@ -11,6 +11,7 @@ import { blogPosts } from '../data/blogData';
 import { useData } from '../context/DataContext';
 import StatsBanner from '../components/StatsBanner';
 import ScrollReveal from '../components/ScrollReveal';
+import SEO from '../components/SEO';
 import './Blog.css';
 
 export default function Blog({ post: propPost, slug: propSlug }) {
@@ -72,11 +73,36 @@ export default function Blog({ post: propPost, slug: propSlug }) {
 
   return (
     <Page
-      eyebrow="TIRUPATI BALAJI TRAVEL JOURNAL"
+      eyebrow="TIRUPATI TRAVEL JOURNAL"
       title={currentPost.shortTitle || currentPost.title}
       text="Comprehensive pilgrimage insights, road distance guides, and taxi service packages."
       image={currentPost.image || images.temple}
     >
+      <SEO
+        title={`${currentPost.title} | Taxi in Tirupati`}
+        description={currentPost.snippet || currentPost.intro || `Read about ${currentPost.title} on Taxi in Tirupati travel journal.`}
+        canonical={`https://taxi-in-tirupati.com/${currentPost.slug}`}
+        ogImage={currentPost.image || images.temple}
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: currentPost.title,
+          description: currentPost.snippet,
+          image: currentPost.image || images.temple,
+          author: {
+            '@type': 'Organization',
+            name: 'Taxi in Tirupati'
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: 'Taxi in Tirupati',
+            logo: {
+              '@type': 'ImageObject',
+              url: 'https://res.cloudinary.com/znbhjevm/image/upload/f_auto,q_auto,w_800/v1786735401/33e36867-e1e5-4785-bbf1-8255a659662e.png'
+            }
+          }
+        }}
+      />
       <div className="single-blog-page-wrapper">
         <article className="single-blog-article">
         {/* --- BREADCRUMBS --- */}
@@ -249,7 +275,7 @@ export default function Blog({ post: propPost, slug: propSlug }) {
               },
               {
                 q: 'Are driver bata, tolls, and state permits included in your taxi package quotes?',
-                a: 'Yes, all quotes provided by Tirupati Balaji Tours & Travels are 100% all-inclusive.'
+                a: 'Yes, all quotes provided by Taxi in Tirupati are 100% all-inclusive.'
               },
               {
                 q: 'Can we customize our route to include nearby temple visits?',

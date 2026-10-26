@@ -4,7 +4,7 @@ export const phone = '+918688624758';
 export const whatsapp = `https://wa.me/${phone}`;
 export const whatsappBooking = (message = 'Hi, I would like to enquire about your travel services.') => `${whatsapp}?text=${encodeURIComponent(message)}`;
 export const whatsappChat = (context = '') => {
-  const base = `Hi! I'm interested in booking a cab/tour with Tirupati Balaji Tours & Travels.`;
+  const base = `Hi! I'm interested in booking a cab/tour with Taxi in Tirupati.`;
   const contextLine = context ? `\nI'm currently viewing: ${context}` : '';
   const closing = `\n\nCould you please help me with availability and pricing?`;
   return `${whatsapp}?text=${encodeURIComponent(base + contextLine + closing)}`;

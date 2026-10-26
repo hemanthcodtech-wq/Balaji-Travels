@@ -5,6 +5,7 @@ import { images } from '../data/siteData';
 import { serviceLinks } from '../data/servicePages';
 import StatsBanner from '../components/StatsBanner';
 import ScrollReveal from '../components/ScrollReveal';
+import SEO from '../components/SEO';
 import './Services.css';
 
 const serviceContent = [
@@ -34,11 +35,24 @@ const packageLinks = serviceLinks.filter(x => x.slug.includes('packages'));
 
 export default function Services(){
   return <Page eyebrow="TRAVEL SERVICES" title="Complete travel solutions, built around your journey." text="From a local Tirupati ride to a multi-day group tour, choose a service, tell us your plan and we will help you arrange the right vehicle and route." image={images.taxi}>
+    <SEO
+      title="Travel Services & Vehicle Rental Packages | Taxi in Tirupati"
+      description="Comprehensive travel services in Tirupati: Local 8h/80km packages, Balaji Darshan tours, corporate travel, weddings, and customized pilgrimage itineraries."
+      canonical="https://taxi-in-tirupati.com/services"
+      schema={{
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://taxi-in-tirupati.com/services' }
+        ]
+      }}
+    />
     <section className="content services-page">
       <ScrollReveal direction="up">
         <section className="services-presence">
           <div><span className="eyebrow">OUR PRESENCE</span><h2>Local knowledge with travel support that goes beyond one route.</h2></div>
-          <p>With reliable operations across key cities and towns in India, Tirupati Balaji Tours & Travels brings comfortable vehicles and experienced drivers closer to your journey. Our services cover local travel, outstation trips, Balaji Darshan, corporate travel, customized plans, holidays and group occasions.</p>
+          <p>With reliable operations across key cities and towns in India, Taxi in Tirupati brings comfortable vehicles and experienced drivers closer to your journey. Our services cover local travel, outstation trips, Balaji Darshan, corporate travel, customized plans, holidays and group occasions.</p>
         </section>
       </ScrollReveal>
 

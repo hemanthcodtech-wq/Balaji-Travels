@@ -137,7 +137,7 @@ export default function PaymentStatus() {
           <a
             href={`https://wa.me/918688624758?text=${encodeURIComponent(
               isSuccess
-                ? `Hi Tirupati Balaji Tours! I have completed advance booking payment of ₹${amount}. Txn ID: ${txnid}, Easebuzz Ref: ${easebuzzId}. Please confirm vehicle assignment.`
+                ? `Hi Taxi in Tirupati! I have completed advance booking payment of ₹${amount}. Txn ID: ${txnid}, Easebuzz Ref: ${easebuzzId}. Please confirm vehicle assignment.`
                 : `Hi! My payment for Txn ID: ${txnid} failed. Can you please assist me with booking confirmation?`
             )}`}
             target="_blank"

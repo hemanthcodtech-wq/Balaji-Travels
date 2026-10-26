@@ -1,16 +1,22 @@
 import React from 'react';
 import { Scale, CheckSquare, Car, Shield, PhoneCall, ArrowRight, Clock, FileText, Lock, Globe } from 'lucide-react';
+import SEO from '../components/SEO';
 import { phone, whatsapp, email } from '../data/siteData';
 import './LegalPage.css';
 
 export default function TermsConditions() {
   return (
     <div className="legal-page">
+      <SEO
+        title="Terms and Conditions – Taxi in Tirupati"
+        description="Read the official booking terms, vehicle usage rules, payment guidelines, and driver dispatch conditions for Taxi in Tirupati."
+        canonical="https://taxi-in-tirupati.com/terms-and-conditions"
+      />
       <div className="legal-hero">
         <span className="legal-badge">OFFICIAL TERMS OF SERVICE</span>
-        <h1>Terms and Conditions</h1>
+        <h1>Terms and Conditions – Taxi in Tirupati</h1>
         <p>
-          Understand Our Best Terms and Conditions | 5 Star Rated Taxi Service in Tirupati
+          Official terms of service for Taxi in Tirupati – Your 5-star rated taxi service in Tirupati.
         </p>
       </div>
 
@@ -33,7 +39,7 @@ export default function TermsConditions() {
           <section id="acceptance" className="legal-card">
             <h2><Scale /> 1. Acceptance & Overview</h2>
             <p>
-              By utilizing the services and website of <strong>Tirupati Balaji Tours Travels</strong>, you acknowledge and accept the terms and conditions outlined herein. Prior to making any bookings or reservations, we urge you to thoroughly review these terms.
+              By utilizing the services and website of <strong>Taxi in Tirupati</strong>, you acknowledge and accept the terms and conditions outlined herein. Prior to making any bookings or reservations, we urge you to thoroughly review these terms.
             </p>
           </section>
 

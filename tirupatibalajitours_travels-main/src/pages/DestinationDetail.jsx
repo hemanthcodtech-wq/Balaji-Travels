@@ -12,6 +12,7 @@ import { getVehicleInfo } from '../data/packageData';
 import { fleet } from '../data/fleetData';
 import { useData } from '../context/DataContext';
 import EasebuzzModal from '../components/EasebuzzModal';
+import SEO from '../components/SEO';
 import './DestinationDetail.css';
 
 export default function DestinationDetail() {
@@ -110,6 +111,39 @@ export default function DestinationDetail() {
 
   return (
     <div className="dest-detail-page">
+      <SEO
+        title={`${destName} Tour Package from Tirupati – Book AC Cab`}
+        description={`Book a private cab from Tirupati to ${destName}. ${destDesc} Starting from ${destPrice}. 24/7 doorstep pickup, verified drivers, transparent pricing.`}
+        canonical={`/destinations/${destSlug}`}
+        image={destImage}
+        schema={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'TouristAttraction',
+              name: destName,
+              description: destDesc,
+              url: `https://taxi-in-tirupati.com/destinations/${destSlug}`
+            },
+            {
+              '@type': 'FAQPage',
+              mainEntity: faqs.map(f => ({
+                '@type': 'Question',
+                name: f.q,
+                acceptedAnswer: { '@type': 'Answer', text: f.a }
+              }))
+            },
+            {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+                { '@type': 'ListItem', position: 2, name: 'Destinations', item: 'https://taxi-in-tirupati.com/destinations' },
+                { '@type': 'ListItem', position: 3, name: destName, item: `https://taxi-in-tirupati.com/destinations/${destSlug}` }
+              ]
+            }
+          ]
+        }}
+      />
       {/* BREADCRUMB */}
       <nav className="dest-breadcrumb" aria-label="Breadcrumb">
         <div className="dest-container">

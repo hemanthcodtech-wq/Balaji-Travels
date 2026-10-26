@@ -37,7 +37,8 @@ export function DataProvider({ children }) {
       ]);
 
       if (fleetsRes?.success && fleetsRes.data?.length > 0) {
-        const formattedFleets = fleetsRes.data.map(v => ({
+        const cleanData = fleetsRes.data.filter(v => v.id !== 'vehicle-1792051956694' && (v.name || '').toLowerCase() !== 'hello sarath');
+        const formattedFleets = cleanData.map(v => ({
           ...v,
           localLong: v.local_long || v.localLong,
           localKmShort: v.local_km_short || v.localKmShort,

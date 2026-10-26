@@ -10,6 +10,7 @@ import { blogPosts, blogCategories } from '../data/blogData';
 import { useData } from '../context/DataContext';
 import StatsBanner from '../components/StatsBanner';
 import ScrollReveal from '../components/ScrollReveal';
+import SEO from '../components/SEO';
 import './BlogIndex.css';
 
 const recentCommentsList = [
@@ -103,6 +104,19 @@ export default function BlogIndex() {
 
   return (
     <div className="blog-social-wrapper">
+      <SEO
+        title="Tirupati Travel Blog – Pilgrimage Guides & Temple Tips"
+        description="Read expert Tirupati travel guides, temple darshan tips, cab distance charts and South India pilgrimage insights from Taxi in Tirupati."
+        canonical="/blog"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://taxi-in-tirupati.com/blog' }
+          ]
+        }}
+      />
       {/* --- HERO BANNER --- */}
       <section className="blog-hero-card">
         <div className="blog-hero-content">
@@ -383,7 +397,7 @@ export default function BlogIndex() {
             <h3>Need a Cab in Tirupati?</h3>
             <p>Book 24/7 verified AC cabs with experienced drivers for Tirumala darshan and outstation trips.</p>
             <a 
-              href={`${whatsapp}?text=${encodeURIComponent('Hi Tirupati Balaji Tours! I want to book a cab for my trip.')}`}
+              href={`${whatsapp}?text=${encodeURIComponent('Hi Taxi in Tirupati! I want to book a cab for my trip.')}`}
               target="_blank" 
               rel="noreferrer"
               className="button cta-wa-button"

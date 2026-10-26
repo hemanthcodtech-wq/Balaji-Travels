@@ -10,6 +10,7 @@ import {
 import { getTourBySlug, packagesData, getVehicleInfo } from '../data/packageData';
 import { useData } from '../context/DataContext';
 import EasebuzzModal from '../components/EasebuzzModal';
+import SEO from '../components/SEO';
 import './TourDetail.css';
 
 export default function TourDetail() {
@@ -114,6 +115,33 @@ export default function TourDetail() {
 
   return (
     <div className="tour-detail-page">
+      <SEO
+        title={`${tour.name} – ${tour.duration} Package from Tirupati`}
+        description={`Book ${tour.name} from Tirupati. ${tour.duration} pilgrimage package covering ${tour.route}. Starting from ${tour.startingPrice}. AC cab with driver, tolls included.`}
+        canonical={`/tour/${tour.slug}`}
+        image={tour.image}
+        schema={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'FAQPage',
+              mainEntity: faqs.map(f => ({
+                '@type': 'Question',
+                name: f.q,
+                acceptedAnswer: { '@type': 'Answer', text: f.a }
+              }))
+            },
+            {
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+                { '@type': 'ListItem', position: 2, name: 'Tours', item: 'https://taxi-in-tirupati.com/tours' },
+                { '@type': 'ListItem', position: 3, name: tour.name, item: `https://taxi-in-tirupati.com/tour/${tour.slug}` }
+              ]
+            }
+          ]
+        }}
+      />
       {/* BREADCRUMB */}
       <nav className="tour-breadcrumb" aria-label="Breadcrumb">
         <div className="tour-container">

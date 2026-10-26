@@ -7,6 +7,7 @@ import { getVehicleInfo } from '../data/packageData';
 import StatsBanner from '../components/StatsBanner';
 import ScrollReveal from '../components/ScrollReveal';
 import EasebuzzModal from '../components/EasebuzzModal';
+import SEO from '../components/SEO';
 import { useData } from '../context/DataContext';
 import './Fleet.css';
 import './FleetOverride.css';
@@ -169,6 +170,19 @@ export default function Fleet() {
       text="From economical Tirupati cabs to premium Urbania, Tempo Travellers and large buses, choose the space, comfort and price point that fits your trip."
       image={images.hero}
     >
+      <SEO
+        title="Cab Fleet & Vehicle Rental Tariff in Tirupati | Taxi in Tirupati"
+        description="View our clean AC vehicle fleet: Sedans, Ertiga, Innova Crysta, Fortuner, Tempo Travellers, Force Urbania and luxury buses with transparent rate cards."
+        canonical="https://taxi-in-tirupati.com/fleet"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Fleet', item: 'https://taxi-in-tirupati.com/fleet' }
+          ]
+        }}
+      />
       <section className="content" id="rentals">
         {(() => {
           const startingLocal = fleets.find(f => f.local)?.local?.split('/')[0]?.trim() || '₹2,880';

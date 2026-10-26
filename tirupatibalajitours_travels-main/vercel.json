@@ -6,5 +6,38 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "redirects": [
+    { "source": "/tirupati-cabs/tirupati-to-srikalahasti-distance", "destination": "/tirupati-cabs/tirupati-to-srikalahasti-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-kanipakam-distance", "destination": "/tirupati-cabs/tirupati-to-kanipakam-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-golden-temple-distance", "destination": "/tirupati-cabs/tirupati-to-golden-temple-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-tiruvannamalai-distance", "destination": "/tirupati-cabs/tirupati-to-tiruvannamalai-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-kanchipuram-distance", "destination": "/tirupati-cabs/tirupati-to-kanchipuram-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-rameshwaram-distance", "destination": "/tirupati-cabs/tirupati-to-rameshwaram-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-srisailam-distance", "destination": "/tirupati-cabs/tirupati-to-srisailam-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-pondicherry-distance", "destination": "/tirupati-cabs/tirupati-to-pondicherry-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-madurai-distance", "destination": "/tirupati-cabs/tirupati-to-madurai-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-kanyakumari-distance", "destination": "/tirupati-cabs/tirupati-to-kanyakumari-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-talakona-distance", "destination": "/tirupati-cabs/tirupati-to-talakona-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-mahabalipuram-distance", "destination": "/tirupati-cabs/tirupati-to-mahabalipuram-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-chennai-distance", "destination": "/tirupati-cabs/tirupati-to-chennai-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-bangalore-distance", "destination": "/tirupati-cabs/tirupati-to-bangalore-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-arunachalam-distance", "destination": "/tirupati-cabs/tirupati-to-arunachalam-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-tirumala-distance", "destination": "/tirupati-cabs/tirupati-to-tirumala-cab", "permanent": true },
+    { "source": "/tirupati-cabs/tirupati-to-vellore-golden-temple-distance", "destination": "/tirupati-cabs/tirupati-to-vellore-golden-temple-cab", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/robots.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain" }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/xml" }
+      ]
+    }
   ]
 }

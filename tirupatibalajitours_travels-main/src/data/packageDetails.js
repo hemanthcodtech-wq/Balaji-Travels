@@ -377,5 +377,16 @@ export const packageDetails = {
     ], 
     included: 'Includes Tolls, Parking, Driver Batta, TN Border Tax', 
     excluded: 'Excludes Accommodation, Food, Temple Entry Tickets & Personal Expenses' 
+  },
+  'Tirupati to Kandukur Taxi Package': { 
+    prices: [
+      ['Sedan (4 Seater)', '₹5,500'],
+      ['Ertiga (6 Seater)', '₹7,200'],
+      ['Innova Crysta (7 Seater)', '₹8,800'],
+      ['Tempo Traveller 12 Seater', '₹11,500'],
+      ['Tempo Traveller 16 Seater', '₹13,800']
+    ], 
+    included: 'Includes Tolls, Parking, Driver Batta & State Taxes', 
+    excluded: 'Excludes Food & Personal Expenses' 
   }
 };

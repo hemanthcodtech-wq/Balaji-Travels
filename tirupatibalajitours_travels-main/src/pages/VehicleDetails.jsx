@@ -6,6 +6,7 @@ import { whatsapp } from '../data/siteData';
 import { fleet } from '../data/fleetData';
 import { useData } from '../context/DataContext';
 import EasebuzzModal from '../components/EasebuzzModal';
+import SEO from '../components/SEO';
 import './VehicleDetails.css';
 
 export default function VehicleDetails() {
@@ -46,6 +47,25 @@ export default function VehicleDetails() {
 
   return (
     <Page eyebrow={category} title={name} text={use} image={image}>
+      <SEO
+        title={`${name} Rental in Tirupati – Tariffs & Bookings | Taxi in Tirupati`}
+        description={`Rent ${name} in Tirupati for local 8h/80km sightseeing, outstation pilgrimage tours and Tirupati airport transfers. Starting local fare: ${cleanPrice(local) || '₹2,880'}. Sanitised AC vehicle.`}
+        canonical={`https://taxi-in-tirupati.com/fleet/${vehicleId}`}
+        ogImage={image}
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: `${name} Rental - Taxi in Tirupati`,
+          description: use,
+          image: image,
+          offers: {
+            '@type': 'Offer',
+            price: (cleanPrice(local) || '2880').replace(/[^0-9]/g, ''),
+            priceCurrency: 'INR',
+            availability: 'https://schema.org/InStock'
+          }
+        }}
+      />
       <section className="vehicle-detail content">
         <Link className="vehicle-back" to="/fleet"><ArrowLeft size={16} /> Back to fleet</Link>
         

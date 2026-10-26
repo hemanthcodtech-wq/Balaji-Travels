@@ -223,6 +223,14 @@ export const packagesData = [
     image: 'https://res.cloudinary.com/znbhjevm/image/upload/f_auto,q_auto/v1789291165/tamil-nadu-temple-tour-7-days.png',
     slug: '7-day-divine-tamil-nadu-temple-tour-from-tirupati',
     aliases: ['tamil-nadu-temple-tour-7-days']
+  },
+  {
+    name: 'Tirupati to Kandukur Taxi Package',
+    duration: '1 Day',
+    route: 'Tirupati → Naidupeta → Gudur → Nellore → Kavali → Kandukur',
+    image: 'https://res.cloudinary.com/znbhjevm/image/upload/f_auto,q_auto/v1789290873/tirupati-1-day-taxi.png',
+    slug: 'kandukur',
+    aliases: ['tirupati-to-kandukur-taxi-service', 'kandukur-tour']
   }
 ];
 

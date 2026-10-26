@@ -5,6 +5,7 @@ import { packageDetails } from '../data/packageDetails';
 import StatsBanner from '../components/StatsBanner';
 import EasebuzzModal from '../components/EasebuzzModal';
 import { useData } from '../context/DataContext';
+import SEO from '../components/SEO';
 import './Tours.css';
 
 const buildAllVehiclePrices = (pricesArray, startingPriceStr, fleetsList = []) => {
@@ -124,6 +125,19 @@ export default function Tours() {
 
   return (
     <div className="tours-page-wrapper">
+      <SEO
+        title="Tirupati Tour Packages – Temple Pilgrimage & South India Cab Tours"
+        description="Book 1-day to 7-day Tirupati tour packages for Tirumala darshan, Srikalahasti, Kanipakam, Arunachalam, Madurai & South India temple circuits. Private AC cabs with driver."
+        canonical="/tours"
+        schema={{
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://taxi-in-tirupati.com/' },
+            { '@type': 'ListItem', position: 2, name: 'Tours', item: 'https://taxi-in-tirupati.com/tours' }
+          ]
+        }}
+      />
       {/* --- HERO BANNER --- */}
       <section className="tours-hero-card">
         <span className="tours-badge">
@@ -306,7 +320,7 @@ export default function Tours() {
         </p>
         <div className="tours-custom-actions">
           <a
-            href={`${whatsapp}?text=${encodeURIComponent('Hi Tirupati Balaji Tours! I want to request a customized tour itinerary for my group.')}`}
+            href={`${whatsapp}?text=${encodeURIComponent('Hi Taxi in Tirupati! I want to request a customized tour itinerary for my group.')}`}
             target="_blank"
             rel="noreferrer"
             className="button hero-wa-btn"
