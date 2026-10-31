@@ -7,7 +7,7 @@ import { samplePayments } from '../services/easebuzzService';
 
 const DataContext = createContext();
 
-const API_BASE = import.meta.env?.VITE_BACKEND_URL || 'https://balaji-travels-7mpf.vercel.app/api';
+const API_BASE = import.meta.env?.VITE_BACKEND_URL || 'https://api.taxi-in-tirupati.com/api';
 
 export function DataProvider({ children }) {
   const [fleets, setFleets] = useState(defaultFleet);

@@ -10,7 +10,7 @@ const DEFAULT_EASEBUZZ_CONFIG = {
   currency: 'INR'
 };
 
-const BACKEND_API_BASE = import.meta.env?.VITE_BACKEND_URL || 'https://balaji-travels-7mpf.vercel.app/api';
+const BACKEND_API_BASE = import.meta.env?.VITE_BACKEND_URL || 'https://api.taxi-in-tirupati.com/api';
 
 export const getEasebuzzConfig = () => {
   try {

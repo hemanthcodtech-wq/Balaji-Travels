@@ -1,7 +1,8 @@
 import nodemailer from 'nodemailer';
 
 /**
- * Creates and returns configured nodemailer transporter using Gmail App Password
+ * Creates and returns configured nodemailer transporter
+ * Supports custom SMTP (Hostinger / Titan / cPanel) or Gmail
  */
 const getTransporter = () => {
   const user = process.env.EMAIL_USER;
@@ -11,8 +12,25 @@ const getTransporter = () => {
     return null;
   }
 
+  const host = process.env.EMAIL_HOST || 'smtp.hostinger.com';
+  const port = Number(process.env.EMAIL_PORT) || 465;
+  const secure = process.env.EMAIL_SECURE !== 'false'; // true for port 465, false for 587
+
+  // If EMAIL_SERVICE is explicitly set to 'gmail', use gmail service
+  if (process.env.EMAIL_SERVICE === 'gmail' || (!process.env.EMAIL_HOST && user.endsWith('@gmail.com'))) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: user.trim(),
+        pass: pass.trim(),
+      },
+    });
+  }
+
   return nodemailer.createTransport({
-    service: 'gmail',
+    host: host.trim(),
+    port,
+    secure,
     auth: {
       user: user.trim(),
       pass: pass.trim(),
