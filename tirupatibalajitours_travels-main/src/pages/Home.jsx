@@ -12,6 +12,7 @@ import {
   FaCircleCheck, FaRoute, FaLandmark, FaPlane, FaWandMagicSparkles
 } from 'react-icons/fa6';
 import { destinations, images, services, tours, vehicles, whatsapp, whatsappChat, whatsappBooking, phone } from '../data/siteData';
+import { getTourSlug } from '../data/packageData';
 import SEO from '../components/SEO';
 import { fleet } from '../data/fleetData';
 import { cabRoutes } from '../data/cabRoutes';
@@ -317,7 +318,7 @@ export default function Home() {
                     isNavbarBooking: true
                   })}
                 >
-                  Book Cab 💳
+                  Book Cab
                 </button>
                 <a className="hero-card-btn hero-btn-whatsapp" href={whatsappBooking('Hi! I\'d like to enquire about a cab or tour package from Tirupati. Could you please share availability and pricing?')} target="_blank" rel="noreferrer">
                   <FaWhatsapp size={14} /> Enquiry on WhatsApp
@@ -525,7 +526,7 @@ export default function Home() {
                 </div>
                 <h3>{t[0]}</h3>
                 <div className="package-route-pill">{t[2]}</div>
-                <Link to="/tours" className="card-action-btn package-btn">
+                <Link to={`/tour/${getTourSlug(t[0])}`} className="card-action-btn package-btn">
                   View Package Itinerary <FaArrowRight size={14} />
                 </Link>
               </div>

@@ -234,6 +234,17 @@ export const packagesData = [
   }
 ];
 
+export function getTourSlug(tourName) {
+  if (!tourName) return 'tours';
+  const found = packagesData.find(p => 
+    p.name.toLowerCase() === tourName.toLowerCase() ||
+    tourName.toLowerCase().includes(p.name.toLowerCase()) ||
+    p.name.toLowerCase().includes(tourName.toLowerCase())
+  );
+  if (found) return found.slug;
+  return tourName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
 export function getTourBySlug(slugParam) {
   if (!slugParam) return null;
   const cleanSlug = slugParam.toLowerCase().replace(/^\/+|\/+$/g, '');

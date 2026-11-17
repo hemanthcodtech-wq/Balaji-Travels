@@ -12,42 +12,66 @@
   padding: 0 1.25rem;
 }
 
-/* Breadcrumb */
-.tour-breadcrumb {
-  background: #ffffff;
-  border-bottom: 1px solid #e2e8f0;
-  padding: 0.85rem 0;
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.tour-breadcrumb .tour-container {
-  display: flex;
+/* Breadcrumb Inside Hero Banner */
+.tour-hero-breadcrumb {
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  margin-bottom: 1.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: #94a3b8;
   flex-wrap: wrap;
 }
 
-.tour-breadcrumb a {
-  color: #0284c7;
+.tour-hero-breadcrumb a {
+  color: #38bdf8;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
 
-.tour-breadcrumb a:hover {
+.tour-hero-breadcrumb a:hover {
+  color: #7dd3fc;
   text-decoration: underline;
 }
 
-.tour-breadcrumb span {
-  color: #334155;
-  font-weight: 600;
+.tour-hero-breadcrumb svg {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.tour-hero-breadcrumb .current {
+  color: #f8fafc;
+  font-weight: 700;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+  .tour-hero-breadcrumb {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+  }
+  .tour-hero-breadcrumb .current {
+    max-width: 150px;
+  }
 }
 
 /* Hero Section */
 .tour-hero-section {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   color: #ffffff;
-  padding: 3.5rem 0;
+  padding: 2.25rem 0 3.25rem;
 }
 
 .tour-hero-grid {

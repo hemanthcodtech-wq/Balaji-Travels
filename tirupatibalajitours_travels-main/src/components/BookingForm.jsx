@@ -405,15 +405,16 @@ Please confirm availability and share the final quote. Thank you!`;
           {/* Bottom Action Row */}
           <div className="booking-card-footer">
             <div className="booking-actions-group">
-              <button className="button wa-booking-btn" type="submit">
-                <MessageCircle size={16} /> Enquire on WhatsApp
+              <button className="button wa-booking-btn" type="submit" style={{ flex: 1 }}>
+                <MessageCircle size={16} /> Book via WhatsApp
               </button>
               <button 
                 className="button pay-booking-btn" 
                 type="button" 
                 onClick={() => setIsPayModalOpen(true)}
+                style={{ flex: 1, background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)', color: '#fff', boxShadow: '0 4px 14px rgba(2, 132, 199, 0.3)' }}
               >
-                <CreditCard size={16} /> Book Cab 💳
+                <Car size={16} /> Instant Booking
               </button>
             </div>
           </div>

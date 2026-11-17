@@ -142,17 +142,6 @@ export default function TourDetail() {
           ]
         }}
       />
-      {/* BREADCRUMB */}
-      <nav className="tour-breadcrumb" aria-label="Breadcrumb">
-        <div className="tour-container">
-          <Link to="/">Home</Link>
-          <ChevronRight size={14} />
-          <Link to="/tours">Tours</Link>
-          <ChevronRight size={14} />
-          <span>{tour.name}</span>
-        </div>
-      </nav>
-
       {/* HERO BANNER SECTION */}
       <section 
         className="tour-hero-section"
@@ -162,6 +151,17 @@ export default function TourDetail() {
           backgroundPosition: 'center'
         }}
       >
+        <div className="tour-container">
+          {/* IN-HERO BREADCRUMB */}
+          <nav className="tour-hero-breadcrumb" aria-label="Breadcrumb">
+            <Link to="/">Home</Link>
+            <ChevronRight size={13} />
+            <Link to="/tours">Tour Packages</Link>
+            <ChevronRight size={13} />
+            <span className="current">{tour.name}</span>
+          </nav>
+        </div>
+
         <div className="tour-container tour-hero-grid">
           <motion.div 
             className="tour-hero-content"

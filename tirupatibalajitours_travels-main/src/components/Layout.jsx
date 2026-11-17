@@ -361,7 +361,7 @@ export default function Layout() {
                 transition: 'all 0.2s ease'
               }}
             >
-              <CreditCard size={14} /> Book Cab 💳
+              <Car size={14} /> Book Cab
             </button>
             <a className="nav-wa" href={whatsappChat(pageLabel)} target="_blank" rel="noreferrer">
               <MessageCircle size={16} /> WhatsApp

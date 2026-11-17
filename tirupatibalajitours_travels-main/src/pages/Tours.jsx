@@ -298,7 +298,7 @@ export default function Tours() {
                         });
                       }}
                     >
-                      <CreditCard size={14} /> Book Cab 💳
+                      <Car size={14} /> Book Tour
                     </button>
                   </div>
                 </div>

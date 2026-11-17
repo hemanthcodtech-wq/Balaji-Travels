@@ -439,13 +439,40 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
 
   if (!isOpen) return null;
 
-  const handleNextToStep2 = (e) => {
+  const handleDirectWhatsAppBooking = (e) => {
     e.preventDefault();
     if (!formData.firstname.trim() || !formData.phone.trim() || !formData.date || !formData.pickup.trim()) {
       alert('Please fill in all required fields (Name, Phone, Date, Pickup Location).');
       return;
     }
-    setStep(2);
+
+    // Save lead/query to Database so admin tracks it
+    addQuery({
+      name: formData.firstname.trim(),
+      phone: formData.phone.trim(),
+      from: formData.pickup.trim(),
+      to: formData.service || 'Tirupati Travel',
+      date: formData.date,
+      trip: dynamicRatePlan,
+      vehicle: formData.vehicle,
+      status: 'Confirmed'
+    });
+
+    // Construct clean, formatted WhatsApp booking message
+    const message = `🙏 *Booking Enquiry – Taxi in Tirupati*
+
+👤 *Customer Name:* ${formData.firstname.trim()}
+📱 *Phone:* ${formData.phone.trim()}
+${formData.email ? `✉️ *Email:* ${formData.email.trim()}\n` : ''}📍 *Pickup Location:* ${formData.pickup.trim()}
+🎯 *Destination / Service:* ${formData.service}
+📅 *Travel Date:* ${formData.date}
+🚗 *Vehicle Selected:* ${formData.vehicle}
+💰 *Rate / Package Tariff:* ${dynamicRatePlan}
+
+Please confirm my cab booking & share driver details. Thank you!`;
+
+    window.open(whatsappBooking(message), '_blank', 'noopener,noreferrer');
+    handleClose();
   };
 
   const handleSubmitPayment = async (e) => {
@@ -571,14 +598,7 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
 
         {!receipt ? (
           <>
-            {/* STEP PROGRESS BAR */}
-            <div className="booking-step-progress">
-              <div className={`booking-step-progress-bar ${step >= 1 ? 'active' : ''}`} />
-              <div className={`booking-step-progress-bar ${step >= 2 ? 'active second' : ''}`} />
-            </div>
-
-            {step === 1 && (
-              <div>
+            <div>
                 {/* STEP HEADER BASED ON BOOKING TYPE */}
                 <div className="itinerary-modal-header" style={{ marginBottom: '1.1rem' }}>
                   <div>
@@ -610,7 +630,7 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
                   </div>
                 )}
 
-                <form onSubmit={handleNextToStep2} style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
+                <form onSubmit={handleDirectWhatsAppBooking} style={{ display: 'flex', flexDirection: 'column', gap: '0.95rem' }}>
                   {/* VEHICLE SELECTION & CONTEXT-BASED RATE CONTROLS */}
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
                     <div>
@@ -799,226 +819,32 @@ export default function EasebuzzModal({ isOpen, onClose, initialData = {}, modal
                     </div>
                   </div>
 
-                  {isCustomPackages ? (
-                    <button 
-                      type="button" 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (!formData.firstname.trim() || !formData.phone.trim() || !formData.date || !formData.pickup.trim()) {
-                          alert('Please fill in required fields (Name, Phone, Date, Pickup Location).');
-                          return;
-                        }
-                        const msg = `Hi, I would like to request a Custom Package Quote.\nName: ${formData.firstname}\nPhone: ${formData.phone}\nDate: ${formData.date}\nPickup Point: ${formData.pickup}\nSelected Vehicle: ${formData.vehicle}`;
-                        window.open(whatsappBooking(msg), '_blank', 'noopener,noreferrer');
-                        handleClose();
-                      }}
-                      className="button" 
-                      style={{ 
-                        width: '100%', 
-                        padding: '0.9rem 1.25rem', 
-                        fontSize: '1rem', 
-                        fontWeight: 900, 
-                        background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)', 
-                        border: 'none', 
-                        borderRadius: 12,
-                        color: '#ffffff',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        marginTop: '0.5rem',
-                        boxShadow: '0 8px 24px rgba(37, 211, 102, 0.35)'
-                      }}
-                    >
-                      <MessageCircle size={18} /> Send Quote Enquiry on WhatsApp 💬
-                    </button>
-                  ) : (
-                    <button 
-                      type="submit" 
-                      className="button" 
-                      style={{ 
-                        width: '100%', 
-                        padding: '0.9rem 1.25rem', 
-                        fontSize: '1rem', 
-                        fontWeight: 900, 
-                        background: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)', 
-                        border: 'none', 
-                        borderRadius: 12,
-                        color: '#ffffff',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        marginTop: '0.5rem',
-                        boxShadow: '0 8px 24px rgba(2, 132, 199, 0.3)'
-                      }}
-                    >
-                      Next Step Pay 💳 <ArrowRight size={18} />
-                    </button>
-                  )}
+                  {/* SUBMIT BUTTON -> DIRECT WHATSAPP */}
+                  <button 
+                    type="submit" 
+                    className="button" 
+                    style={{ 
+                      width: '100%', 
+                      padding: '0.95rem 1.25rem', 
+                      fontSize: '1.05rem', 
+                      fontWeight: 900, 
+                      background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)', 
+                      border: 'none', 
+                      borderRadius: 12,
+                      color: '#ffffff',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginTop: '0.5rem',
+                      boxShadow: '0 8px 24px rgba(37, 211, 102, 0.35)'
+                    }}
+                  >
+                    <MessageCircle size={20} /> Confirm & Book via WhatsApp 💬
+                  </button>
                 </form>
               </div>
-            )}
-
-            {step === 2 && (
-              /* STEP 2: SUMMARY & ADVANCE PAYMENT */
-              <div>
-                <div className="itinerary-modal-header" style={{ marginBottom: '1.1rem' }}>
-                  <div>
-                    <p style={{ color: '#d97706', fontWeight: 800, fontSize: '0.72rem', letterSpacing: '1px', textTransform: 'uppercase' }}>STEP 2 OF 2 · ADVANCE PAYMENT</p>
-                    <h3 style={{ fontSize: '1.25rem', color: '#060c2c', margin: 0, fontWeight: 800 }}>Confirm & Lock Booking</h3>
-                  </div>
-                </div>
-
-                <form onSubmit={handleSubmitPayment} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {/* SUMMARY BOX */}
-                  <div style={{ background: '#f8fafc', padding: '0.9rem 1rem', borderRadius: 14, border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '0.55rem', fontSize: '0.88rem' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed #e2e8f0', paddingBottom: '0.4rem' }}>
-                      <span style={{ color: '#64748b' }}>Customer:</span>
-                      <strong style={{ color: '#060c2c' }}>{formData.firstname} ({formData.phone})</strong>
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed #e2e8f0', paddingBottom: '0.4rem' }}>
-                      <span style={{ color: '#64748b' }}>Service / Tour:</span>
-                      <strong style={{ color: '#060c2c' }}>{formData.service}</strong>
-                    </div>
-
-                    {durationText && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed #e2e8f0', paddingBottom: '0.4rem' }}>
-                        <span style={{ color: '#64748b' }}>Total Duration:</span>
-                        <strong style={{ color: '#0284c7', fontWeight: 800 }}>⏱️ {durationText}</strong>
-                      </div>
-                    )}
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px dashed #e2e8f0', paddingBottom: '0.4rem' }}>
-                      <span style={{ color: '#64748b' }}>Selected Vehicle:</span>
-                      <strong style={{ color: '#d97706', fontWeight: 800 }}>{formData.vehicle}</strong>
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px dashed #e2e8f0', paddingBottom: '0.4rem' }}>
-                      <span style={{ color: '#64748b' }}>Trip / Rate Type:</span>
-                      <strong style={{ 
-                        color: '#d97706', 
-                        background: '#fffdf5', 
-                        padding: '4px 10px', 
-                        borderRadius: 20, 
-                        border: '1.5px solid #fde68a',
-                        fontSize: '0.8rem',
-                        fontWeight: 900
-                      }}>
-                        {dynamicRatePlan}
-                      </strong>
-                    </div>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span style={{ color: '#64748b' }}>Date & Pickup:</span>
-                      <strong style={{ color: '#060c2c' }}>{formData.date} · {formData.pickup}</strong>
-                    </div>
-                  </div>
-
-                  {/* INCLUSIONS SUMMARY */}
-                  {bookingType === 'tour' ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                      <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', padding: '7px 9px', borderRadius: 10, fontSize: '0.74rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px', lineHeight: 1.35 }}>
-                        <CheckCircle2 size={14} style={{ flexShrink: 0, color: '#16a34a' }} />
-                        <span><strong>Includes:</strong> {matchedPkg?.included ? matchedPkg.included.replace(/Includes\s*/i, '') : 'Tolls, Parking, Driver Batta, Fuel & AC Cab'}</span>
-                      </div>
-
-                      <div style={{ background: '#fff1f2', border: '1px solid #fecdd3', color: '#be123c', padding: '7px 9px', borderRadius: 10, fontSize: '0.74rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '5px', lineHeight: 1.35 }}>
-                        <AlertCircle size={14} style={{ flexShrink: 0, color: '#e11d48' }} />
-                        <span><strong>Excludes:</strong> {matchedPkg?.excluded ? matchedPkg.excluded.replace(/Excludes\s*/i, '') : 'Darshan Tickets, Food, Hotel Stay & Permit'}</span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', padding: '8px 12px', borderRadius: 10, fontSize: '0.78rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <CheckCircle2 size={15} style={{ flexShrink: 0, color: '#16a34a' }} />
-                      <span>
-                        <strong>
-                          {serviceName.toLowerCase().includes('outstation') ? 'Outstation Taxi Inclusions:' :
-                           serviceName.toLowerCase().includes('urbania') ? 'Urbania Inclusions:' :
-                           serviceName.toLowerCase().includes('tempo') ? 'Tempo Traveller Inclusions:' :
-                           serviceName.toLowerCase().includes('bus') ? 'Bus Inclusions:' :
-                           serviceName.toLowerCase().includes('airport') ? 'Airport Taxi Inclusions:' :
-                           'Taxi Inclusions:'}
-                        </strong>{' '}
-                        {serviceName.toLowerCase().includes('outstation') ? 'Clean AC Vehicle, Professional Driver, Fuel & Interstate Permit Assistance' :
-                         serviceName.toLowerCase().includes('urbania') ? 'Plush Recliners, AC Cabin, USB Ports & Professional Driver' :
-                         serviceName.toLowerCase().includes('tempo') ? 'Push-Back Seats, Air Conditioned, Luggage Boot & Expert Driver' :
-                         serviceName.toLowerCase().includes('bus') ? 'Luxury AC Coach, Ample Storage & Experienced Highway Driver' :
-                         serviceName.toLowerCase().includes('airport') ? 'Flight Schedule Tracking, Doorstep Pickup/Drop & AC Vehicle' :
-                         'Clean AC Vehicle, Professional Driver & Fuel'}
-                      </span>
-                    </div>
-                  )}
-
-                  {/* ADVANCE TOKEN BOX */}
-                  <div style={{ background: '#fffdf5', padding: '1rem', borderRadius: 14, border: '2px solid #f59e0b', textAlign: 'center', boxShadow: '0 4px 15px rgba(245, 158, 11, 0.15)' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#d97706', display: 'block', letterSpacing: '0.05em' }}>
-                      ADVANCE BOOKING TOKEN
-                    </span>
-                    <strong style={{ fontSize: '1.8rem', color: '#060c2c', display: 'block', margin: '0.2rem 0' }}>
-                      ₹1,000
-                    </strong>
-                    <span style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.4, display: 'block' }}>
-                      Fixed advance deposit to lock your cab & driver. Remaining balance payable directly to driver.
-                    </span>
-                  </div>
-
-                  {/* ENCRYPTED GATEWAY GUARANTEE */}
-                  <div style={{ background: '#f8fafc', padding: '0.75rem 1rem', borderRadius: 10, border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <Lock size={18} color="#0284c7" />
-                    <span style={{ fontSize: '0.75rem', color: '#475569', lineHeight: 1.35 }}>
-                      Secured by <strong>256-Bit SSL Payment Encryption</strong>. Supports UPI, Google Pay, PhonePe, Cards & NetBanking.
-                    </span>
-                  </div>
-
-                  {/* ACTION BUTTONS */}
-                  <div style={{ display: 'flex', gap: '0.6rem', marginTop: '0.2rem' }}>
-                    <button 
-                      type="button" 
-                      onClick={() => setStep(1)}
-                      style={{ padding: '0.85rem 1rem', borderRadius: 12, border: '1px solid #cbd5e1', background: '#f1f5f9', color: '#475569', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <ArrowLeft size={16} /> Step 1
-                    </button>
-
-                    <button 
-                      type="submit" 
-                      disabled={isProcessing}
-                      className="button" 
-                      style={{ 
-                        flex: 1, 
-                        padding: '0.85rem 1rem', 
-                        fontSize: '1rem', 
-                        fontWeight: 900, 
-                        background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)', 
-                        border: 'none', 
-                        borderRadius: 12,
-                        color: '#060c2c',
-                        cursor: isProcessing ? 'not-allowed' : 'pointer',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: '0.5rem',
-                        boxShadow: '0 8px 24px rgba(245, 158, 11, 0.35)'
-                      }}
-                    >
-                      {isProcessing ? (
-                        <>
-                          <Loader2 size={18} className="animate-spin" /> Processing...
-                        </>
-                      ) : (
-                        <>
-                          Pay ₹1,000 Advance 💳 <ArrowRight size={18} />
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </form>
-              </div>
-            )}
           </>
         ) : (
           /* PAYMENT SUCCESS RECEIPT */

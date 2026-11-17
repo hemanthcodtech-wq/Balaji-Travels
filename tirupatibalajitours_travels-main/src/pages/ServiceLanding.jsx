@@ -667,7 +667,7 @@ export default function ServiceLanding({ slug: routeSlug }) {
               style={{ border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               onClick={() => setSelectedPayVehicle({ service: data.title, price: '2880', slug })}
             >
-              Book Cab 💳 <ArrowRight size={15} />
+              Book Cab <ArrowRight size={15} />
             </button>
           </div>
         </div>
